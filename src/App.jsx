@@ -23,7 +23,7 @@ import { useAuthContext } from './hooks/useAuthContext';
 function App() {
 	const [data, setData] = useState([]);
 
-	const endPoint = 'https://tradecity-api.herokuapp.com/api/';
+	const endPoint = 'https://tradecity.herokuapp.com/api/';
 	useEffect(() => {
 		fetchProducts();
 	}, []);

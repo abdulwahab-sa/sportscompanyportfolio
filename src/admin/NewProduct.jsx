@@ -136,7 +136,7 @@ export const NewProduct = () => {
 	};
 
 	const createProduct = async (productData) => {
-		const endPoint = 'https://tradecity-api.herokuapp.com/api/';
+		const endPoint = 'https://tradecity.herokuapp.com/api/';
 
 		try {
 			const result = await axios.post(endPoint, productData);

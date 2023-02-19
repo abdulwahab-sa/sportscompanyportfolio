@@ -75,7 +75,7 @@ const Errormessage = styled.span`
 export const UpdateProduct = () => {
 	const { id } = useParams();
 
-	const endPoint = `https://tradecity-api.herokuapp.com/api/${id}`;
+	const endPoint = `https://tradecity.herokuapp.com/api/${id}`;
 
 	const [formInputs, setFormInputs] = useState({
 		productName: '',

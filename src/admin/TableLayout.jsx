@@ -7,7 +7,7 @@ import axios from 'axios';
 
 export default function ProductList() {
 	const [data, setData] = useState([]);
-	const endPoint = 'https://tradecity-api.herokuapp.com/api/';
+	const endPoint = 'https://tradecity.herokuapp.com/api/';
 
 	const fetchproducts = async () => {
 		axios
