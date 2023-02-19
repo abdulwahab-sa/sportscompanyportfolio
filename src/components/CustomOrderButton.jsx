@@ -47,7 +47,7 @@ const Button = styled.button`
 	margin: 1rem auto;
 	&:hover {
 		background-color: rgba(47, 79, 79, 0.5);
-		color: teal;
+		color: #fff;
 	}
 `;
 

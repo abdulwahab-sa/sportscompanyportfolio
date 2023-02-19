@@ -52,6 +52,7 @@ const Input = styled.input`
 	padding-left: 20px;
 	background-color: white;
 	font-family: 'Montserrat', sans-serif;
+	color: #303030;
 `;
 
 const Button = styled.button`

@@ -1,4 +1,6 @@
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { BigScreen } from '../responsive';
 
 const Container = styled.div`
 	width: 100%;
@@ -21,7 +23,7 @@ const Statement = styled.p`
 `;
 const Title = styled.h2`
 	width: 100vw;
-	height: 3rem;
+	height: 5rem;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -55,56 +57,131 @@ const Info = styled.div`
 const InfoTitle = styled.h3``;
 const InfoDetail = styled.span``;
 
+const Form = styled.form`
+	text-align: center;
+	margin: 12px 0;
+`;
+
 const FormContainer = styled.div`
-	width: 50%;
 	margin: 1rem auto;
+	height: 100%;
+	width: 80%;
+	${BigScreen({ width: '40%' })}
 `;
 
 const Input = styled.input`
-	background-color: white;
-	height: 40px;
 	width: 100%;
-	border: 2px solid teal;
-	color: teal;
-	text-indent: 5px;
+	margin: 0 auto;
+	padding: 10px 8px;
+	background-color: #f0f0f0;
+	border: none;
+	border-radius: 5px;
 	font-family: 'Montserrat', sans-serif;
+	color: #303030;
+	&:focus {
+		outline: none;
+	}
 `;
 const Label = styled.label`
-	font-size: 1rem;
+	font-size: 0.8rem;
 	font-weight: 500;
 `;
 
-const DetailInput = styled.input`
-	background-color: white;
-	height: 100px;
+const DetailInput = styled.textarea`
+	background-color: #f0f0f0;
+	border: none;
 	width: 100%;
-	border: 2px solid teal;
-	color: teal;
-	text-indent: 5px;
+	padding: 10px 8px;
+	color: #303030;
 	font-family: 'Montserrat', sans-serif;
+	&:focus {
+		outline: none;
+	}
 `;
 
 const InputItem = styled.div`
 	display: flex;
 	flex-direction: column;
+	margin: 0.5rem auto;
 `;
 
 const Button = styled.button`
-	padding: 10px;
-	border: 2px solid teal;
+	padding: 10px 8px;
 	background-color: teal;
+	border: none;
+	border-radius: 10px;
 	cursor: pointer;
-	font-weight: 600;
+	font-weight: 500;
 	font-family: 'Montserrat', sans-serif;
 	transition: 0.2s all ease-out;
-	margin: 1.5rem auto;
+	margin-top: 10px;
 	&:hover {
-		background-color: #f8f4f4;
-		color: teal;
+		background-color: #81cdc6;
+		color: #fff;
 	}
 `;
 
+const Errormessage = styled.span`
+	color: red;
+	font-size: 12px;
+	display: block;
+`;
+
+const Successmessage = styled.span`
+	color: green;
+	font-size: 12px;
+	display: block;
+	margin-top: 8px;
+`;
+
 function Contact() {
+	const [formData, setFormData] = useState({
+		name: '',
+		email: '',
+		message: '',
+	});
+
+	const [errors, setErrors] = useState({
+		name: '',
+		message: '',
+		email: '',
+	});
+
+	const [isSubmitting, setIsSubmitting] = useState(false);
+
+	const handleChange = (event) => {
+		setFormData({ ...formData, [event.target.name]: event.target.value });
+	};
+
+	const validateForm = () => {
+		let newErrors = {};
+		if (!formData.name) {
+			newErrors.name = 'Name is required';
+		}
+		if (!formData.message) {
+			newErrors.message = 'Message is required';
+		}
+		if (!formData.email) {
+			newErrors.email = 'Email is required';
+		}
+		setErrors(newErrors);
+		return Object.values(newErrors).every((error) => error === '');
+	};
+
+	const handleSubmit = (event) => {
+		event.preventDefault();
+		setIsSubmitting(true);
+		if (validateForm()) {
+			const forminputs = new FormData();
+			forminputs.append('name', formData.name);
+			forminputs.append('email', formData.email);
+			forminputs.append('message', formData.message);
+			console.log(forminputs.get('name'));
+		} else {
+			setIsSubmitting(false);
+		}
+	};
+
 	return (
 		<Container>
 			<Title>CONTACT INFORMATION</Title>
@@ -131,19 +208,24 @@ function Contact() {
 				</Info>
 			</ContactContainer>
 			<FormContainer>
-				<InputItem>
-					<Label>Your Name</Label>
-					<Input />
-				</InputItem>
-				<InputItem>
-					<Label>Your Email</Label>
-					<Input />
-				</InputItem>
-				<InputItem>
-					<Label>Your Message</Label>
-					<DetailInput />
-				</InputItem>
-				<Button>SUBMIT</Button>
+				<Form onSubmit={handleSubmit}>
+					<InputItem>
+						<Input type="text" name="name" value={formData.name} placeholder="Your name" onChange={handleChange} />
+						{errors.name && <Errormessage> Name is required</Errormessage>}
+					</InputItem>
+					<InputItem>
+						<Input type="email" name="email" value={formData.email} placeholder="Your email" onChange={handleChange} />
+						{errors.email && <Errormessage> Email is required</Errormessage>}
+					</InputItem>
+					<InputItem>
+						<DetailInput type="text" name="message" value={formData.message} placeholder="Your message" onChange={handleChange} rows="8" />
+						{errors.message && <Errormessage> Message is required</Errormessage>}
+					</InputItem>
+					<Button type="submit" disabled={isSubmitting}>
+						SUBMIT
+					</Button>
+					{isSubmitting && <Successmessage>Your message has been sent! </Successmessage>}
+				</Form>
 			</FormContainer>
 		</Container>
 	);

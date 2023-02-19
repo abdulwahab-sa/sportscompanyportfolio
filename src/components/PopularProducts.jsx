@@ -2,6 +2,8 @@ import { allProducts, finalData, popularProducts, productsDropdown } from '../da
 import styled from 'styled-components';
 import { Link, useParams } from 'react-router-dom';
 import { MediumScreen } from '../responsive';
+import { useContext } from 'react';
+import { ProductContext } from '../context/ProductContext';
 
 const Container = styled.div`
 	width: 100%;
@@ -74,15 +76,22 @@ const Button = styled.button`
 	}
 `;
 
+function getUniqueListBy(arr, key) {
+	return [...new Map(arr.map((item) => [item[key], item])).values()];
+}
+
 const PopularProducts = () => {
+	const { data } = useContext(ProductContext);
+	const uniqueData = getUniqueListBy(data, 'subCategory');
+
 	return (
 		<>
 			<Title> POPULAR PRODUCTS </Title>
 			<Container>
-				{popularProducts.map((product) => {
+				{uniqueData.splice(0, 7).map((product) => {
 					return (
 						<ProductWrapper key={product.id}>
-							<Image src={product.subCategoryImg} />
+							<Image src={`data:image/jpeg;base64,${product.productImg}`} />
 							<ProductTitle>{product.productName}</ProductTitle>
 							<Article>{product.article}</Article>
 							<Link to={`/${product.mainCategory}/${product.subCategory}/${product.id}`}>

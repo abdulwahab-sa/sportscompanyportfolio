@@ -16,4 +16,12 @@ const MediumScreen = (props) => {
 	`;
 };
 
-export { mobile, MediumScreen };
+const BigScreen = (props) => {
+	return css`
+		@media only screen and (min-width: 750px) {
+			${props}
+		}
+	`;
+};
+
+export { mobile, MediumScreen, BigScreen };

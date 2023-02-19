@@ -1,8 +1,9 @@
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { allProducts, finalData } from '../data';
 import { Link } from 'react-router-dom';
-import Customorder from '../pages/Customorder';
+import { useContext } from 'react';
+import { ProductContext } from '../context/ProductContext';
+import { MediumScreen } from '../responsive';
 
 const Container = styled.div`
 	height: 100%;
@@ -13,12 +14,13 @@ const Wrapper = styled.div`
 	padding: 50px;
 	height: 100%;
 	display: flex;
+	${MediumScreen({ flexDirection: 'column' })}
 `;
 
 const ImgContainer = styled.div`
 	flex: 1;
 	height: 400px;
-	width: 400px;
+	max-width: 500px;
 `;
 
 const Image = styled.img`
@@ -49,40 +51,38 @@ const Desc = styled.p`
 `;
 
 const Button = styled.button`
+	background-color: #303030;
+	color: whitesmoke;
 	padding: 10px;
-	border: 2px solid teal;
-	background-color: teal;
-	cursor: pointer;
-	font-weight: 600;
+	border-radius: 5%;
 	font-family: 'Montserrat', sans-serif;
-	transition: 0.2s all ease-out;
-	margin: 1.5rem auto;
+	border: none;
+	font-weight: 600;
+	cursor: pointer;
+	transition: 0.3s all ease-out;
+
 	&:hover {
-		background-color: #f8f4f4;
-		color: teal;
+		box-shadow: inset -10rem 0 0 0 #606060, inset 10rem 0 0 0 #606060;
 	}
 `;
 
 const Product = () => {
-	const { category, productId } = useParams();
-	const productItem = finalData.find((prod) => prod.id === parseInt(productId));
-	const { productImg, productName, article } = productItem;
+	const { data } = useContext(ProductContext);
+	const { productId } = useParams();
+	const productItem = data.find((prod) => prod.id === parseInt(productId));
+	const { productImg, productName, article, productDescription } = productItem;
 
 	return (
 		<Container>
 			<Wrapper>
 				<ImgContainer>
-					<Image src={productImg} />
+					<Image src={`data:image/jpeg;base64,${productImg}`} />
 				</ImgContainer>
 				<InfoContainer>
 					<Title>{productName}</Title>
 					<Article> {article}</Article>
-					<Desc>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis, dolor in finibus malesuada, lectus ipsum porta nunc,
-						at iaculis arcu nisi sed mauris. Nulla fermentum vestibulum ex, eget tristique tortor pretium ut. Curabitur elit justo,
-						consequat id condimentum ac, volutpat ornare.
-					</Desc>
-					<Link to={'/Customorder'}>
+					<Desc>{productDescription}</Desc>
+					<Link to={'/Customorder'} style={{ textDecoration: 'none', border: 'none' }}>
 						<Button>SEND INQUIRY</Button>
 					</Link>
 				</InfoContainer>

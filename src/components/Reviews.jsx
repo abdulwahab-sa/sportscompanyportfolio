@@ -1,6 +1,5 @@
 import { React, useState } from 'react';
 import styled from 'styled-components';
-import { MdPerson } from 'react-icons/md';
 import { FaArrowRight, FaArrowLeft } from 'react-icons/fa';
 import { ReviewData } from '../data';
 import { MediumScreen } from '../responsive';

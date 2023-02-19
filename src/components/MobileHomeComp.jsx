@@ -24,6 +24,7 @@ const InfoWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	text-align: left;
+	${MediumScreen({ width: '80%' })}
 `;
 
 const Small = styled.h3`

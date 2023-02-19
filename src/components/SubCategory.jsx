@@ -1,6 +1,9 @@
 import { allProducts, finalData, productsDropdown } from '../data';
 import styled from 'styled-components';
 import { Link, useParams } from 'react-router-dom';
+import { useContext } from 'react';
+import { ProductContext } from '../context/ProductContext';
+import { DataArrayRounded } from '@mui/icons-material';
 
 const Container = styled.div`
 	width: 100%;
@@ -49,23 +52,24 @@ const Button = styled.button`
 	font-weight: 600;
 	cursor: pointer;
 	transition: 0.3s all ease-out;
+
 	&:hover {
-		background-color: whitesmoke;
-		color: #303030;
-		border: 1px solid #303030;
+		box-shadow: inset -10rem 0 0 0 #606060, inset 10rem 0 0 0 #606060;
 	}
 `;
 
 const SubCategory = () => {
-	const { category } = useParams();
-	const subCatProd = finalData.filter((product) => product.subCategory === category);
+	const { category, subcategory } = useParams();
+	const { data } = useContext(ProductContext);
+
+	const subCatProd = data.filter((product) => product.subCategory === subcategory);
 
 	return (
 		<Container>
 			{subCatProd.map((product) => {
 				return (
 					<ProductWrapper key={product.id}>
-						<Image src={product.subCategoryImg} />
+						<Image src={`data:image/jpeg;base64,${product.productImg}`} />
 						<Title>{product.productName}</Title>
 						<Article>{product.article}</Article>
 						<Link to={`/${product.mainCategory}/${product.subCategory}/${product.id}`}>

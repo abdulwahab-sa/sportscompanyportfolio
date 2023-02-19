@@ -1,8 +1,8 @@
-import React from 'react';
-import { subCat, allProducts, finalData } from '../data';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { FaSearch } from 'react-icons/fa';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import { ProductContext } from '../context/ProductContext';
 
 const Container = styled.div`
 	color: #303030;
@@ -49,7 +49,7 @@ const Info = styled.div`
 const Wrapper = styled.div`
 	flex: 1;
 	margin: 5px;
-	min-width: 280px;
+	width: 280px;
 	height: 350px;
 	display: flex;
 	align-items: center;
@@ -109,32 +109,31 @@ function getUniqueListBy(arr, key) {
 }
 
 function MainCategory() {
-	const location = useLocation();
-	const currentCategory = location.pathname.slice(1).toUpperCase();
-	const allSubCategories = finalData.filter((el) => el.mainCategory == currentCategory);
-	const requiredResult = getUniqueListBy(allSubCategories, 'subCategory');
-	const right = currentCategory.substring(currentCategory.length - 4, currentCategory.length);
-	const left = currentCategory.substring(0, currentCategory.length - 4);
+	const { data } = useContext(ProductContext);
+	const { category } = useParams();
+
+	const reqsubcategories = data.filter((el) => {
+		return el.mainCategory.toLowerCase() == category.toLowerCase();
+	});
+	const uniquesubcategory = getUniqueListBy(reqsubcategories, 'subCategory');
 
 	return (
 		<>
-			<Title> {`${left} ${right}`} </Title>
+			<Title> {category.toUpperCase()} </Title>
 			<Container>
-				{requiredResult.map((items) => {
+				{uniquesubcategory.map((items) => {
 					return (
-						<>
-							<Link to={`/${currentCategory}/${items.subCategory}`}>
-								<Wrapper key={items.id}>
-									<Image src={items.subCategoryImg} />
-									<Info>
-										<Icon>
-											<FaSearch />
-										</Icon>
-									</Info>
-									<CatTitle>{items.subCategory}</CatTitle>
-								</Wrapper>
-							</Link>
-						</>
+						<Link to={`/${category}/${items.subCategory}`}>
+							<Wrapper key={items.id}>
+								<Image src={`data:image/jpeg;base64,${items.subCategoryImg}`} />
+								<Info>
+									<Icon>
+										<FaSearch />
+									</Icon>
+								</Info>
+								<CatTitle>{items.subCategory}</CatTitle>
+							</Wrapper>
+						</Link>
 					);
 				})}
 			</Container>

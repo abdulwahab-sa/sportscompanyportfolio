@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { FaTshirt, FaTruck, FaDollarSign, FaCertificate, FaHeadset } from 'react-icons/fa';
-import { MediumScreen, mobile } from '../responsive';
+import { MediumScreen, mobile, BigScreen } from '../responsive';
 import { useInView } from 'react-intersection-observer';
 import Counter from './Counter';
 import './HomeExtras.css';
@@ -82,6 +82,7 @@ const AcheivementContainer = styled.div`
 	font-family: 'Montserrat', sans-serif;
 	padding: 20px 10px;
 	${MediumScreen({ flexDirection: 'column', padding: '15px' })};
+	${BigScreen({ height: '200px' })}
 `;
 
 const Heading = styled.h2``;
