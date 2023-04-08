@@ -13,25 +13,25 @@ const Container = styled.div`
 	text-align: center;
 	font-family: 'Montserrat', sans-serif;
 	display: flex;
+	justify-content: center;
 	flex-wrap: wrap;
 	padding: 0 10px;
-	transition: 0.5s all ease-out;
-	transform: ${(props) => (props.inView ? '' : 'translateX(-100%)')};
 `;
 
 const Title = styled.h2`
 	color: #303030;
 	font-family: 'Montserrat', sans-serif;
 	text-align: center;
-	margin: 2rem auto;
-	font-size: 2.5rem;
-	${mobile({ fontSize: '1.8rem' })};
+	margin: 2rem 0;
+	font-size: 2.2rem;
+	font-weight: 600;
+	${mobile({ fontSize: '1.6rem' })};
 	&::after {
 		content: '';
 		display: block;
 		background-color: teal;
 		width: 150px;
-		height: 5px;
+		height: 3px;
 		margin: 1rem auto;
 	}
 `;
@@ -41,16 +41,18 @@ const Wrapper = styled.div`
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	height: 12rem;
-	min-width: 30%;
-	margin: 0.2rem auto;
+	margin: 12px;
+	box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 6px;
+	padding: 18px 14px;
+	border-radius: 10px;
+	max-width: 450px;
 `;
 const Icon = styled.div`
-	font-size: 2.2rem;
+	font-size: 1.2rem;
 	color: whitesmoke;
 	background-color: teal;
-	height: 75px;
-	width: 75px;
+	height: 50px;
+	width: 50px;
 	border-radius: 50%;
 	display: flex;
 	align-items: center;
@@ -58,10 +60,14 @@ const Icon = styled.div`
 `;
 
 const Info = styled.span`
-	margin-top: 1.2rem;
-	font-size: 1.4rem;
+	margin: 8px 0;
+	font-size: 1.3rem;
 	color: #303030;
-	font-weight: 600;
+	font-weight: 500;
+`;
+
+const Statement = styled.p`
+	color: #303030;
 `;
 
 const Countertest = styled.div`
@@ -81,13 +87,13 @@ const AcheivementContainer = styled.div`
 	height: 100%;
 	font-family: 'Montserrat', sans-serif;
 	padding: 20px 10px;
-	${MediumScreen({ flexDirection: 'column', padding: '15px' })};
+	${MediumScreen({ flexDirection: 'column', padding: '40px' })};
 	${BigScreen({ height: '200px' })}
 `;
 
 const Heading = styled.h2``;
 const AcheivementInfo = styled.span`
-	font-size: 1rem;
+	font-size: 1.4rem;
 	color: whitesmoke;
 	font-weight: 600;
 	margin-top: 1rem;
@@ -100,67 +106,86 @@ const AcheivementWrapper = styled.div`
 	min-width: 20%;
 	text-align: center;
 	margin: 0 auto;
-	${MediumScreen({ marginTop: '1.5rem' })};
+	${MediumScreen({ margin: '1.5rem' })};
 `;
 
+const data = [
+	{
+		id: 1,
+		icon: FaTshirt,
+		title: 'Custom Designs',
+		statement:
+			'We offer custom designs manufacturing. You can send us your own techpacks or contact with our design team to get your desired design created.',
+	},
+	{
+		id: 2,
+		icon: FaTruck,
+		title: 'Fast Shipping',
+		statement:
+			'Depending on your location, we have wide range of shipping options, from air cargo to sea shipping. We also offer door delivery and express shipping.',
+	},
+	{
+		id: 3,
+		icon: FaDollarSign,
+		title: 'Competitive Prices',
+		statement:
+			'Getting custom designs in low MOQ is much difficult as the prices in the market are high. We have catered the needs of brands by offering custom designs in competitive prices.',
+	},
+	{
+		id: 4,
+		icon: FaCertificate,
+		title: 'Premium Quality',
+		statement:
+			'Our dedicated QC department enables us to control the quality of products at manufacturing and final stages. We proudly manufacture finest quality products using best raw materials.',
+	},
+];
+
+const acheivements = [
+	{
+		id: 1,
+		target: 250,
+		title: 'Happy Clients',
+	},
+	{
+		id: 2,
+		target: 2000,
+		title: 'Orders Completed',
+	},
+	{
+		id: 3,
+		target: 1000,
+		title: 'Client Satisfaction',
+	},
+];
+
 function HomeExtras() {
-	const { ref, inView } = useInView({
-		triggerOnce: 'true',
-	});
 	return (
 		<>
 			<Title> WHY CHOOSE US</Title>
-			<Container ref={ref} inView={inView}>
-				<Wrapper>
-					<Icon>
-						<FaTshirt />
-					</Icon>
-					<Info>CUSTOM DESIGNS</Info>
-				</Wrapper>
-				<Wrapper>
-					<Icon>
-						<FaTruck />
-					</Icon>
-					<Info>FAST SHIPPING</Info>
-				</Wrapper>
-				<Wrapper>
-					<Icon>
-						<FaDollarSign />
-					</Icon>
-					<Info>COMPETITIVE PRICES</Info>
-				</Wrapper>
-				<Wrapper>
-					<Icon>30</Icon>
-					<Info>LOW MOQ</Info>
-				</Wrapper>
-				<Wrapper>
-					<Icon>
-						<FaCertificate />
-					</Icon>
-					<Info>PREMIUM QUALITY</Info>
-				</Wrapper>
-				<Wrapper>
-					<Icon>
-						<FaHeadset />
-					</Icon>
-					<Info>CUSTOMER SERVICE</Info>
-				</Wrapper>
+			<Container>
+				{data.map((el) => {
+					return (
+						<Wrapper key={el.id}>
+							<Icon>
+								<el.icon />
+							</Icon>
+							<Info>{el.title}</Info>
+							<Statement> {el.statement} </Statement>
+						</Wrapper>
+					);
+				})}
 			</Container>
 			<Title>ACHEIVEMENTS</Title>
 
 			<AcheivementContainer>
-				<AcheivementWrapper>
-					<Counter target={250} duration={1.5} />
-					<AcheivementInfo>HAPPY CLIENTS</AcheivementInfo>
-				</AcheivementWrapper>
-				<AcheivementWrapper>
-					<Counter target={2000} duration={1.5} />
-					<AcheivementInfo>ORDERS COMPLETED</AcheivementInfo>
-				</AcheivementWrapper>
-				<AcheivementWrapper>
-					<Counter target={1000} duration={1.5} />
-					<AcheivementInfo>CLIENT SATISFACTION</AcheivementInfo>
-				</AcheivementWrapper>
+				{acheivements.map((el) => {
+					return (
+						<AcheivementWrapper key={el.id}>
+							<Counter target={el.target} duration={1.5} />
+							<AcheivementInfo>{el.title}</AcheivementInfo>
+						</AcheivementWrapper>
+					);
+				})}
 			</AcheivementContainer>
 		</>
 	);

@@ -1,34 +1,32 @@
 import { allProducts, finalData, popularProducts, productsDropdown } from '../data';
 import styled from 'styled-components';
 import { Link, useParams } from 'react-router-dom';
-import { MediumScreen } from '../responsive';
-import { useContext } from 'react';
+import { MediumScreen, mobile } from '../responsive';
+import { useContext, useEffect, useRef } from 'react';
 import { ProductContext } from '../context/ProductContext';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 const Container = styled.div`
 	width: 100%;
 	height: 100%;
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	justify-content: center;
-	color: #303030;
-	font-family: 'Montserrat', sans-serif;
 `;
 
 const Title = styled.h2`
 	color: #303030;
 	font-family: 'Montserrat', sans-serif;
 	text-align: center;
-	margin: 2rem auto;
-	font-size: 2.5rem;
-	${MediumScreen({ fontSize: '1.8rem' })};
+	margin: 2rem 0;
+	font-size: 2.2rem;
+	font-weight: 600;
+	${mobile({ fontSize: '1.6rem' })};
 	&::after {
 		content: '';
 		display: block;
 		background-color: teal;
 		width: 150px;
-		height: 5px;
+		height: 3px;
 		margin: 1rem auto;
 	}
 `;
@@ -41,11 +39,10 @@ const ProductWrapper = styled.div`
 	justify-content: center;
 	align-items: center;
 	text-align: center;
-	margin: 2rem;
 	cursor: pointer;
-	border: 0.5px solid grey;
-	box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+	box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 6px;
 	padding: 5px 0;
+	margin: 12px;
 `;
 
 const Image = styled.img`
@@ -54,25 +51,26 @@ const Image = styled.img`
 	object-fit: contain;
 `;
 
-const Article = styled.span``;
+const Article = styled.span`
+	font-weight: 500;
+`;
 const ProductTitle = styled.h3`
 	margin-top: 0.3rem;
+	font-size: 1rem;
 `;
 
 const Button = styled.button`
 	background-color: #303030;
 	color: whitesmoke;
-	padding: 10px;
-	border-radius: 5%;
+	padding: 10px 60px;
+	border-radius: 14px;
 	font-family: 'Montserrat', sans-serif;
 	border: none;
-	font-weight: 600;
+	font-weight: 500;
 	cursor: pointer;
 	transition: 0.3s all ease-out;
 	&:hover {
-		background-color: whitesmoke;
-		color: #303030;
-		border: 1px solid #303030;
+		background-color: #505050;
 	}
 `;
 
@@ -84,22 +82,64 @@ const PopularProducts = () => {
 	const { data } = useContext(ProductContext);
 	const uniqueData = getUniqueListBy(data, 'subCategory');
 
+	const settings = {
+		infinite: true,
+		speed: 2000,
+		slidesToShow: 4,
+		slidesToScroll: 1,
+		arrows: true,
+		autoplay: true,
+		dots: true,
+		centrePadding: 0,
+		fade: false,
+		responsive: [
+			{
+				breakpoint: 1024,
+				settings: {
+					slidesToShow: 3,
+					slidesToScroll: 3,
+					infinite: true,
+					dots: true,
+				},
+			},
+			{
+				breakpoint: 600,
+				settings: {
+					slidesToShow: 2,
+					slidesToScroll: 2,
+					initialSlide: 2,
+				},
+			},
+			{
+				breakpoint: 480,
+				settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1,
+				},
+			},
+		],
+	};
+
 	return (
 		<>
 			<Title> POPULAR PRODUCTS </Title>
 			<Container>
-				{uniqueData.splice(0, 7).map((product) => {
-					return (
-						<ProductWrapper key={product.id}>
-							<Image src={`data:image/jpeg;base64,${product.productImg}`} />
-							<ProductTitle>{product.productName}</ProductTitle>
-							<Article>{product.article}</Article>
-							<Link to={`/${product.mainCategory}/${product.subCategory}/${product.id}`}>
-								<Button>Custom Order</Button>
-							</Link>
-						</ProductWrapper>
-					);
-				})}
+				<Slider {...settings}>
+					{data.map((product) => {
+						return (
+							<div>
+								<ProductWrapper>
+									<Image src={`data:image/jpeg;base64,${product.productImg}`} />
+									<ProductTitle>{product.productName}</ProductTitle>
+									<Article>{product.article}</Article>
+									<Link to={`/${product.mainCategory}/${product.subCategory}/${product.id}`}>
+										<Button>Custom Order</Button>
+									</Link>
+								</ProductWrapper>
+							</div>
+						);
+					})}
+				</Slider>
 			</Container>
 		</>
 	);

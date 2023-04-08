@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { productsDropdown } from '../data';
 import CategoryItem from './CategoryItem';
-import { MediumScreen } from '../responsive';
+import { mobile, MediumScreen } from '../responsive';
 
 const Container = styled.div`
 	display: flex;
@@ -14,17 +14,18 @@ const Title = styled.h2`
 	color: #303030;
 	font-family: 'Montserrat', sans-serif;
 	text-align: center;
-	margin: 2rem auto;
-	font-size: 2.5rem;
+	margin: 2rem 0;
+	font-size: 2.2rem;
+	font-weight: 600;
+	${mobile({ fontSize: '1.6rem' })};
 	&::after {
 		content: '';
 		display: block;
 		background-color: teal;
 		width: 150px;
-		height: 5px;
+		height: 3px;
 		margin: 1rem auto;
 	}
-	${MediumScreen({ fontSize: '1.8rem' })};
 `;
 
 function Categories() {

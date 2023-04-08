@@ -37,17 +37,19 @@ const Heading = styled.h1`
 	}
 `;
 const Button = styled.button`
-	padding: 10px;
-	border: 2px solid teal;
+	padding: 16px 14px;
+	border-radius: 10px;
 	background-color: teal;
+	color: #fff;
 	cursor: pointer;
-	font-weight: 600;
+	font-weight: 500;
 	font-family: 'Montserrat', sans-serif;
 	transition: 0.2s all ease-out;
-	margin: 1rem auto;
+	margin-top: 20px;
+	font-size: 16px;
+	border: none;
 	&:hover {
-		background-color: rgba(47, 79, 79, 0.5);
-		color: #fff;
+		background-color: #00aeae;
 	}
 `;
 
