@@ -116,8 +116,8 @@ function Menu() {
 	const [sideMenu, setSideMenu] = useState(false);
 	const [sideMenuDrop, setSideMenuDrop] = useState(false);
 
-	const handleMobileMenuDrop = () => {
-		setSideMenu(false);
+	const handleMobileMenuDrop = (event, item) => {
+		item = !'PRODUCTS' && setSideMenu(false);
 		setSideMenuDrop(true);
 		(event) => event.preventDefault();
 	};
@@ -196,7 +196,7 @@ function Menu() {
 					if (item.name === 'PRODUCTS') {
 						return (
 							<>
-								<Link to={item.path} style={{ textDecoration: 'none' }} onClick={handleMobileMenuDrop}>
+								<Link to={item.path} style={{ textDecoration: 'none' }} onClick={() => handleMobileMenuDrop(item.name)}>
 									<MobileMenuItems key={item.id}>{item.name}</MobileMenuItems>
 								</Link>
 

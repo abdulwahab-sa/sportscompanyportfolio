@@ -31,7 +31,7 @@ const Title = styled.h2`
 function Categories() {
 	return (
 		<>
-			<Title> OUR CATEGORIES </Title>
+			<Title> Our Product Range </Title>
 			<Container>
 				{productsDropdown.map((item) => (
 					<CategoryItem item={item} />

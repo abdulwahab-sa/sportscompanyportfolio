@@ -84,6 +84,7 @@ const FormStatement = styled.div`
 	padding: 20px;
 	color: #303030;
 	color: whitesmoke;
+	border-radius: 10px;
 `;
 
 const InputWrapper = styled.div`
@@ -96,7 +97,6 @@ const Input = styled.input`
 	width: 100%;
 	margin: 0 auto;
 	padding: 10px 8px;
-	background-color: #d1d1d1;
 	border: none;
 	border-radius: 5px;
 	font-family: 'Montserrat', sans-serif;
@@ -110,7 +110,6 @@ const Textarea = styled.textarea`
 	width: 100%;
 	margin: 10px auto;
 	padding: 10px 8px;
-	background-color: #d1d1d1;
 	border: none;
 	border-radius: 5px;
 	font-family: 'Montserrat', sans-serif;
@@ -140,7 +139,6 @@ const FileAttachment = styled.input`
 	cursor: pointer;
 	&::file-selector-button {
 		padding: 0.5rem 0.6rem;
-		color: whitesmoke;
 		font-family: 'Montserrat', sans-serif;
 	}
 `;

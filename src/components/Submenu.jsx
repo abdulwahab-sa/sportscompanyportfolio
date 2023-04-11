@@ -30,6 +30,7 @@ const SubmenuItem = styled.a`
 
 	&:hover {
 		background-color: teal;
+		color: #fff;
 	}
 `;
 

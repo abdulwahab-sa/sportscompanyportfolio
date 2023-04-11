@@ -6,6 +6,7 @@ import PopularProducts from '../components/PopularProducts';
 import Reviews from '../components/Reviews';
 import CustomOrderButton from '../components/CustomOrderButton';
 import MobileHomeComp from '../components/MobileHomeComp';
+import { motion } from 'framer-motion';
 
 function Home() {
 	return (

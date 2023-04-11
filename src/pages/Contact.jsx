@@ -22,7 +22,7 @@ const Statement = styled.p`
 	margin: 0 auto;
 `;
 const Title = styled.h2`
-	width: 100vw;
+	width: 100%;
 	height: 5rem;
 	display: flex;
 	justify-content: center;
@@ -106,18 +106,19 @@ const InputItem = styled.div`
 `;
 
 const Button = styled.button`
-	padding: 10px 8px;
-	background-color: teal;
-	border: none;
+	padding: 12px 16px;
 	border-radius: 10px;
+	background-color: teal;
+	color: #fff;
 	cursor: pointer;
 	font-weight: 500;
 	font-family: 'Montserrat', sans-serif;
 	transition: 0.2s all ease-out;
-	margin-top: 10px;
+	margin-top: 20px;
+	font-size: 16px;
+	border: none;
 	&:hover {
-		background-color: #81cdc6;
-		color: #fff;
+		background-color: #00aeae;
 	}
 `;
 

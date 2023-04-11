@@ -24,11 +24,12 @@ const ProductWrapper = styled.div`
 	justify-content: center;
 	align-items: center;
 	text-align: center;
-	margin: 2rem;
 	cursor: pointer;
-	border: 0.5px solid grey;
-	box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+	box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 6px;
 	padding: 5px 0;
+	margin: 12px;
+	color: #303030;
+	border-radius: 5px;
 `;
 
 const Image = styled.img`
@@ -45,16 +46,15 @@ const Title = styled.h3`
 const Button = styled.button`
 	background-color: #303030;
 	color: whitesmoke;
-	padding: 10px;
-	border-radius: 5%;
+	padding: 10px 60px;
+	border-radius: 14px;
 	font-family: 'Montserrat', sans-serif;
 	border: none;
-	font-weight: 600;
+	font-weight: 500;
 	cursor: pointer;
 	transition: 0.3s all ease-out;
-
 	&:hover {
-		box-shadow: inset -10rem 0 0 0 #606060, inset 10rem 0 0 0 #606060;
+		background-color: #505050;
 	}
 `;
 

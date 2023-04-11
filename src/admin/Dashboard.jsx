@@ -3,6 +3,7 @@ import TableLayout from './TableLayout';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useLogout } from '../hooks/useLogout';
+import Inquiry from './Inquiry';
 
 const Container = styled.div`
 	width: 100%;
@@ -45,11 +46,14 @@ const Button = styled.button`
 `;
 
 const Dashboard = () => {
+	const [dashboard, setDashboard] = useState([]);
+
 	const { logout } = useLogout();
 	const handleLogout = (e) => {
 		e.preventDefault();
 		logout();
 	};
+
 	return (
 		<Container>
 			<Header>
@@ -64,7 +68,7 @@ const Dashboard = () => {
 					Add Product
 				</Button>
 			</Link>
-			<TableLayout />
+			<Inquiry />
 		</Container>
 	);
 };

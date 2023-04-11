@@ -5,6 +5,7 @@ import { MediumScreen, mobile, BigScreen } from '../responsive';
 import { useInView } from 'react-intersection-observer';
 import Counter from './Counter';
 import './HomeExtras.css';
+import { useEffect } from 'react';
 
 const Container = styled.div`
 	margin: 2rem auto;
@@ -16,6 +17,9 @@ const Container = styled.div`
 	justify-content: center;
 	flex-wrap: wrap;
 	padding: 0 10px;
+	transition: 0.6s;
+	opacity: ${(props) => (props.inView ? 1 : 0)};
+	transform: translateY(${(props) => (props.inView ? '0' : '60%')});
 `;
 
 const Title = styled.h2`
@@ -159,10 +163,20 @@ const acheivements = [
 ];
 
 function HomeExtras() {
+	const { ref, inView, entry } = useInView({
+		threshold: 0,
+		rootMargin: '-100px',
+		triggerOnce: true,
+	});
+	/*	useEffect(() => {
+		console.log(inView);
+	}, [inView]);
+*/
+
 	return (
 		<>
-			<Title> WHY CHOOSE US</Title>
-			<Container>
+			<Title> Why Choose Us</Title>
+			<Container ref={ref} inView={inView}>
 				{data.map((el) => {
 					return (
 						<Wrapper key={el.id}>
@@ -175,7 +189,7 @@ function HomeExtras() {
 					);
 				})}
 			</Container>
-			<Title>ACHEIVEMENTS</Title>
+			<Title>Our Acheivements</Title>
 
 			<AcheivementContainer>
 				{acheivements.map((el) => {

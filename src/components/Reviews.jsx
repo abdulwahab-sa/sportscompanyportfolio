@@ -2,7 +2,7 @@ import { React, useState } from 'react';
 import styled from 'styled-components';
 import { FaArrowRight, FaArrowLeft } from 'react-icons/fa';
 import { ReviewData } from '../data';
-import { MediumScreen } from '../responsive';
+import { MediumScreen, mobile } from '../responsive';
 
 const Container = styled.div`
 	width: 100%;
@@ -17,15 +17,16 @@ const Heading = styled.h1`
 	color: #303030;
 	font-family: 'Montserrat', sans-serif;
 	text-align: center;
-	margin: 2rem auto;
-	font-size: 2.5rem;
-	${MediumScreen({ fontSize: '1.8rem' })};
+	margin: 4rem 0;
+	font-size: 2.2rem;
+	font-weight: 600;
+	${mobile({ fontSize: '1.6rem' })};
 	&::after {
 		content: '';
 		display: block;
 		background-color: teal;
 		width: 150px;
-		height: 5px;
+		height: 3px;
 		margin: 1rem auto;
 	}
 `;
@@ -102,7 +103,7 @@ function Reviews() {
 
 	return (
 		<>
-			<Heading> TESTIMONIALS </Heading>
+			<Heading> Testimonials </Heading>
 			<Container>
 				<Arrow direction={'left'} onClick={() => handleClick('left')}>
 					<FaArrowLeft />

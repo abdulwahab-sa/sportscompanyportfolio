@@ -1,6 +1,6 @@
 import { BiSend } from 'react-icons/bi';
 import styled from 'styled-components';
-import { MediumScreen } from '../responsive';
+import { MediumScreen, mobile } from '../responsive';
 
 const Container = styled.div`
 	height: 100%;
@@ -18,15 +18,16 @@ const Title = styled.h2`
 	color: #303030;
 	font-family: 'Montserrat', sans-serif;
 	text-align: center;
-	margin: 2rem auto;
-	font-size: 2.5rem;
-	${MediumScreen({ fontSize: '1.8rem' })};
+	margin: 1.8rem 0;
+	font-size: 2.2rem;
+	font-weight: 600;
+	${mobile({ fontSize: '1.6rem' })};
 	&::after {
 		content: '';
 		display: block;
 		background-color: teal;
 		width: 150px;
-		height: 5px;
+		height: 3px;
 		margin: 1rem auto;
 	}
 `;

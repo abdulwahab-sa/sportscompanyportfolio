@@ -1,8 +1,8 @@
-import { allProducts, finalData, popularProducts, productsDropdown } from '../data';
+import './PopularProduct.css';
 import styled from 'styled-components';
-import { Link, useParams } from 'react-router-dom';
-import { MediumScreen, mobile } from '../responsive';
-import { useContext, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
+import { mobile } from '../responsive';
+import { useContext } from 'react';
 import { ProductContext } from '../context/ProductContext';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -11,6 +11,7 @@ import 'slick-carousel/slick/slick-theme.css';
 const Container = styled.div`
 	width: 100%;
 	height: 100%;
+	font-family: 'Montserrat', sans-serif;
 `;
 
 const Title = styled.h2`
@@ -43,6 +44,8 @@ const ProductWrapper = styled.div`
 	box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 6px;
 	padding: 5px 0;
 	margin: 12px;
+	color: #303030;
+	border-radius: 5px;
 `;
 
 const Image = styled.img`
@@ -53,6 +56,7 @@ const Image = styled.img`
 
 const Article = styled.span`
 	font-weight: 500;
+	font-size: 14px;
 `;
 const ProductTitle = styled.h3`
 	margin-top: 0.3rem;
@@ -87,7 +91,7 @@ const PopularProducts = () => {
 		speed: 2000,
 		slidesToShow: 4,
 		slidesToScroll: 1,
-		arrows: true,
+		arrows: false,
 		autoplay: true,
 		dots: true,
 		centrePadding: 0,
@@ -122,7 +126,7 @@ const PopularProducts = () => {
 
 	return (
 		<>
-			<Title> POPULAR PRODUCTS </Title>
+			<Title> Popular Products </Title>
 			<Container>
 				<Slider {...settings}>
 					{data.map((product) => {
