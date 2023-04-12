@@ -10,10 +10,10 @@ import ProductDetail from './components/ProductDetail';
 import MainCategory from './pages/MainCategory';
 import SubCategory from './components/SubCategory';
 import Dashboard from './admin/Dashboard';
-import Login from './admin/Login';
-import { NewProduct } from './admin/NewProduct';
+import Login from './admin/Components/Login';
+
 import { Thankyou } from './components/Thankyou';
-import { UpdateProduct } from './admin/UpdateProduct';
+import { UpdateProduct } from './admin/Components/UpdateProduct';
 import { ProductContext } from './context/ProductContext';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -44,13 +44,13 @@ function App() {
 		<BrowserRouter>
 			<ProductContext.Provider value={{ data }}>
 				<div id="container">
-					<Menu />
 					<div id="main-content">
 						<Routes>
 							<Route path="/admin" element={user ? <Dashboard /> : <Navigate to={'/login'} />} />
 							<Route path="/login" element={!user ? <Login /> : <Navigate to={'/admin'} />} />
-							<Route path="/addproduct" element={user ? <NewProduct /> : <Navigate to={'/login'} />} />
+
 							<Route path="/update/:id" element={user ? <UpdateProduct /> : <Navigate to={'/login'} />} />
+
 							<Route path="/" exact element={<Home />} />
 							<Route path="/about" element={<About />} />
 							<Route path="/contact" element={<Contact />} />
@@ -61,7 +61,6 @@ function App() {
 							<Route path="/thankyou" element={<Thankyou />} />
 						</Routes>
 					</div>
-					<Footer />
 				</div>
 			</ProductContext.Provider>
 		</BrowserRouter>

@@ -1,4 +1,3 @@
-import React from 'react';
 import './TableLayout.css';
 import { DataGrid } from '@mui/x-data-grid';
 import { DeleteOutline } from '@mui/icons-material';
@@ -6,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const Inquiry = () => {
+export default function ProductTable() {
 	const [data, setData] = useState([]);
 	const endPoint = 'https://tradecity.herokuapp.com/api/';
 
@@ -105,6 +104,4 @@ const Inquiry = () => {
 			<DataGrid rows={data} disableSelectionOnClick columns={columns} pageSize={8} checkboxSelection />
 		</div>
 	);
-};
-
-export default Inquiry;
+}

@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import TableLayout from './TableLayout';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useLogout } from '../hooks/useLogout';
-import Inquiry from './Inquiry';
+import Inquiry from './Components/Inquiry';
+import Sidebar from './Components/Sidebar';
 
 const Container = styled.div`
 	width: 100%;
 	height: 100%;
+	display: flex;
+	justify-content: space-between;
 `;
 
 const Title = styled.h2`
@@ -55,6 +57,7 @@ const Dashboard = () => {
 	};
 
 	return (
+		/* 
 		<Container>
 			<Header>
 				<Title> Trade City Corp - Admin Dashboard </Title>
@@ -68,6 +71,12 @@ const Dashboard = () => {
 					Add Product
 				</Button>
 			</Link>
+			<Inquiry />
+			
+		</Container>
+		*/
+		<Container>
+			<Sidebar />
 			<Inquiry />
 		</Container>
 	);

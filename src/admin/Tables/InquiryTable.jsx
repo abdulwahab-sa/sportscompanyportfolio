@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export default function ProductList() {
+export default function InquiryTable() {
 	const [data, setData] = useState([]);
 	const endPoint = 'https://tradecity.herokuapp.com/api/';
 
