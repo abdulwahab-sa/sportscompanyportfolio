@@ -1,24 +1,12 @@
 import './App.css';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import Menu from './components/Menu';
-import Home from './pages/Home';
-import About from './pages/About';
-import Customorder from './pages/Customorder';
-import Contact from './pages/Contact';
-import Footer from './components/Footer';
-import ProductDetail from './components/ProductDetail';
-import MainCategory from './pages/MainCategory';
-import SubCategory from './components/SubCategory';
-import Dashboard from './admin/Dashboard';
-import Login from './admin/Components/Login';
+import { BrowserRouter, Routes, Route, Navigate, RouterProvider } from 'react-router-dom';
 
-import { Thankyou } from './components/Thankyou';
-import { UpdateProduct } from './admin/Components/UpdateProduct';
 import { ProductContext } from './context/ProductContext';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import { useAuthContext } from './hooks/useAuthContext';
+import router from './Routes/Routes';
 
 function App() {
 	const [data, setData] = useState([]);
@@ -41,8 +29,10 @@ function App() {
 	const { user } = useAuthContext();
 
 	return (
-		<BrowserRouter>
-			<ProductContext.Provider value={{ data }}>
+		<ProductContext.Provider value={{ data }}>
+			<RouterProvider router={router} />
+
+			{/*
 				<div id="container">
 					<div id="main-content">
 						<Routes>
@@ -62,8 +52,8 @@ function App() {
 						</Routes>
 					</div>
 				</div>
-			</ProductContext.Provider>
-		</BrowserRouter>
+*/}
+		</ProductContext.Provider>
 	);
 }
 

@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom';
 import { useLogout } from '../hooks/useLogout';
 import Inquiry from './Components/Inquiry';
 import Sidebar from './Components/Sidebar';
+import Categories from './components/Categories';
+import { NewCategory } from './Components/NewCategory';
+import MainPanel from './Components/MainPanel';
 
 const Container = styled.div`
 	width: 100%;
@@ -75,10 +78,8 @@ const Dashboard = () => {
 			
 		</Container>
 		*/
-		<Container>
-			<Sidebar />
-			<Inquiry />
-		</Container>
+
+		<MainPanel />
 	);
 };
 

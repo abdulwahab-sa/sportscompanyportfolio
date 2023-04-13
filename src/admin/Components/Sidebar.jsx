@@ -77,7 +77,7 @@ const Links = [
 		id: 1,
 		icon: MdSpaceDashboard,
 		title: 'Dashboard',
-		to: '/admin',
+		to: '/dashboard',
 	},
 	{
 		id: 2,
@@ -89,13 +89,13 @@ const Links = [
 		id: 3,
 		icon: MdShoppingCart,
 		title: 'Products',
-		to: '/#',
+		to: '/allproducts',
 	},
 	{
 		id: 4,
 		icon: MdMessage,
 		title: 'Inquiries',
-		to: '/#',
+		to: '/inquiries',
 	},
 ];
 

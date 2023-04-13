@@ -42,7 +42,7 @@ const Button = styled.button`
 
 const tableData = [];
 
-const AllCategories = () => {
+const Inquiries = () => {
 	return (
 		<Container>
 			<Wrapper>
@@ -53,4 +53,4 @@ const AllCategories = () => {
 	);
 };
 
-export default AllCategories;
+export default Inquiries;

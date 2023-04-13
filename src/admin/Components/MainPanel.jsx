@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import adminPanelImg from './../images/Admin-Control-Panel.svg';
-import clothingIcon from './../images/clothing-icon.png';
-import messageIcon from './../images/message-icon.png';
+import adminPanelImg from './../../images/Admin-Control-Panel.svg';
+import clothingIcon from './../../images/clothing-icon.png';
+import messageIcon from './../../images/message-icon.png';
 
 const Container = styled.div`
 	width: 100%;
