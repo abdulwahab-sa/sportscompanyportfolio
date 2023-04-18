@@ -5,8 +5,20 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
+const dummyData = [
+	{
+		id: 1,
+		name: 'John Doe',
+		email: 'test@gmail.com',
+		phone: '123456789',
+		requiredQty: '500',
+		orderDetail: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum, eveniet.',
+	},
+];
+
 export default function InquiryTable() {
-	const [data, setData] = useState([]);
+	const [data, setData] = useState(dummyData);
+	/*
 	const endPoint = 'https://tradecity.herokuapp.com/api/';
 
 	const fetchproducts = async () => {
@@ -25,6 +37,7 @@ export default function InquiryTable() {
 		fetchproducts();
 	}, []);
 
+	*/
 	const handleDelete = (id) => {
 		setData(data.filter((item) => item.id !== id));
 		axios
@@ -39,47 +52,23 @@ export default function InquiryTable() {
 
 	const columns = [
 		{ field: 'id', headerName: 'ID', width: 60 },
+
+		{ field: 'name', headerName: 'Client Name', width: 150 },
+		{ field: 'email', headerName: 'Email', width: 150 },
 		{
-			field: 'productImg',
-			headerName: 'Product',
-			width: 100,
-			renderCell: (params) => {
-				return (
-					<div className="productListItem">
-						<img className="productListImg" src={`data:image/jpeg;base64,${params.row.productImg}`} alt="" />
-						{params.row.name}
-					</div>
-				);
-			},
+			field: 'phone',
+			headerName: 'Contact',
+			width: 150,
 		},
-		{ field: 'productName', headerName: 'Product Title', width: 180 },
-		{ field: 'mainCategory', headerName: 'Category', width: 150 },
+
 		{
-			field: 'subCategory',
-			headerName: 'SubCategory',
-			width: 200,
+			field: 'requiredQty',
+			headerName: 'Required Qty',
+			width: 120,
 		},
 		{
-			field: 'subCategoryImg',
-			headerName: 'SubCategory Img',
-			width: 100,
-			renderCell: (params) => {
-				return (
-					<div className="productListItem">
-						<img className="productListImg" src={`data:image/jpeg;base64,${params.row.subCategoryImg}`} alt="" />
-						{params.row.name}
-					</div>
-				);
-			},
-		},
-		{
-			field: 'article',
-			headerName: 'Article #',
-			width: 160,
-		},
-		{
-			field: 'productDescription',
-			headerName: 'Description',
+			field: 'orderDetail',
+			headerName: 'Order Details',
 			width: 200,
 		},
 		{
@@ -90,7 +79,7 @@ export default function InquiryTable() {
 				return (
 					<>
 						<Link to={'/update/' + params.row.id}>
-							<button className="productListEdit">Edit</button>
+							<button className="productListEdit">View</button>
 						</Link>
 						<DeleteOutline className="productListDelete" onClick={() => handleDelete(params.row.id)} />
 					</>
@@ -101,7 +90,7 @@ export default function InquiryTable() {
 
 	return (
 		<div className="productList">
-			<DataGrid rows={data} disableSelectionOnClick columns={columns} pageSize={8} checkboxSelection />
+			<DataGrid rows={data} disableSelectionOnClick columns={columns} pageSize={8} checkboxSelection sx={{ overflowX: 'scroll' }} />
 		</div>
 	);
 }

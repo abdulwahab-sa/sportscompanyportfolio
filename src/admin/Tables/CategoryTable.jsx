@@ -4,11 +4,22 @@ import { DeleteOutline } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import dummyImg from './../../images/casual.png';
+
+const dummyData = [
+	{
+		id: 1,
+		mainCategory: 'Streetwear',
+		subCategory: 'Hoodies',
+		subCategoryImg: dummyImg,
+	},
+];
 
 export default function CategoryTable() {
-	const [data, setData] = useState([]);
+	const [data, setData] = useState(dummyData);
 	const endPoint = 'https://tradecity.herokuapp.com/api/';
 
+	/*
 	const fetchproducts = async () => {
 		axios
 			.get(endPoint)
@@ -24,7 +35,7 @@ export default function CategoryTable() {
 	useEffect(() => {
 		fetchproducts();
 	}, []);
-
+*/
 	const handleDelete = (id) => {
 		setData(data.filter((item) => item.id !== id));
 		axios
@@ -39,21 +50,8 @@ export default function CategoryTable() {
 
 	const columns = [
 		{ field: 'id', headerName: 'ID', width: 60 },
-		{
-			field: 'productImg',
-			headerName: 'Product',
-			width: 100,
-			renderCell: (params) => {
-				return (
-					<div className="productListItem">
-						<img className="productListImg" src={`data:image/jpeg;base64,${params.row.productImg}`} alt="" />
-						{params.row.name}
-					</div>
-				);
-			},
-		},
-		{ field: 'productName', headerName: 'Product Title', width: 180 },
-		{ field: 'mainCategory', headerName: 'Category', width: 150 },
+
+		{ field: 'mainCategory', headerName: 'Main Category', width: 150 },
 		{
 			field: 'subCategory',
 			headerName: 'SubCategory',
@@ -66,21 +64,11 @@ export default function CategoryTable() {
 			renderCell: (params) => {
 				return (
 					<div className="productListItem">
-						<img className="productListImg" src={`data:image/jpeg;base64,${params.row.subCategoryImg}`} alt="" />
+						<img className="productListImg" src={params.row.subCategoryImg} alt="" />
 						{params.row.name}
 					</div>
 				);
 			},
-		},
-		{
-			field: 'article',
-			headerName: 'Article #',
-			width: 160,
-		},
-		{
-			field: 'productDescription',
-			headerName: 'Description',
-			width: 200,
 		},
 		{
 			field: 'action',

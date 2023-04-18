@@ -1,5 +1,5 @@
 :root {
-  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Montserrat',Inter, Avenir, Helvetica, Arial, sans-serif;
   font-size: 16px;
   line-height: 24px;
   font-weight: 400;
@@ -17,3 +17,19 @@
   -webkit-text-size-adjust: 100%;
 }
 
+input[type=file]::file-selector-button {
+  align-content: center;
+  align-items: center;
+  border-radius: 4px;
+  background-color: teal;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 14px;
+  color: #fff;
+  line-height: 1.6rem;
+  text-align: center;
+  white-space: nowrap;
+  width: 140px;
+  height: 40px;
+}

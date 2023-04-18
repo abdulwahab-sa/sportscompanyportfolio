@@ -12,6 +12,8 @@ import Dashboard from '../admin/Dashboard';
 import AllCategories from '../admin/components/Categories';
 import AllProducts from '../admin/Components/Products';
 import Inquiries from '../admin/Components/Inquiry';
+import ViewInquiry from '../admin/Components/ViewInquiry';
+import { UpdateProduct } from '../admin/Components/UpdateProduct';
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -29,7 +31,9 @@ const router = createBrowserRouter(
 				<Route path="dashboard" element={<Dashboard />} />
 				<Route path="/allcategories" element={<AllCategories />} />
 				<Route path="/allproducts" element={<AllProducts />} />
+				<Route path="/updateproduct/:id" element={<UpdateProduct />} />
 				<Route path="/inquiries" element={<Inquiries />} />
+				<Route path="/viewinquiry" element={<ViewInquiry />} />
 			</Route>
 		</>
 	)

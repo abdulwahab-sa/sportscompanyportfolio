@@ -101,7 +101,14 @@ export default function ProductTable() {
 
 	return (
 		<div className="productList">
-			<DataGrid rows={data} disableSelectionOnClick columns={columns} pageSize={8} checkboxSelection />
+			<DataGrid
+				rows={data}
+				disableSelectionOnClick
+				columns={columns}
+				pageSize={8}
+				checkboxSelection
+				sx={{ overflowX: 'scroll !important' }}
+			/>
 		</div>
 	);
 }

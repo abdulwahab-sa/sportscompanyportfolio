@@ -12,17 +12,32 @@ const Container = styled.div`
 	font-family: 'Montserrat', sans-serif;
 `;
 const Title = styled.h2`
-	font-size: 1.8rem;
-	margin: 1rem auto;
-	color: #303030;
+	margin: 2rem auto;
+	font-size: 28px;
+	color: teal;
+	font-weight: 500;
+	text-align: center;
 `;
+
 const Form = styled.form`
 	height: 100%;
-	text-align: left;
 	margin: 2rem auto;
 	display: flex;
-	flex-direction: column;
-	width: 250px;
+	justify-content: center;
+	flex-wrap: wrap;
+	width: 100%;
+`;
+
+const InputWrapper = styled.div`
+	width: 400px;
+	margin: 12px;
+	text-align: center;
+	color: #303030;
+`;
+
+const DescriptionWrapper = styled.div`
+	width: 700px;
+	margin: 12px;
 `;
 
 const Label = styled.label`
@@ -31,11 +46,25 @@ const Label = styled.label`
 `;
 const Input = styled.input`
 	//border: 0.5px solid #303030;
-	padding: 8px;
-	background-color: #f0f0f0;
+	padding: 14px 8px;
+	border: 1px solid #d3d3d3;
 	color: #303030;
-	border: none;
 	font-family: 'Montserrat', sans-serif;
+	width: 100%;
+	border-radius: 8px;
+`;
+
+const Select = styled.select`
+	padding: 14px 8px;
+	color: #303030;
+	border: 1px solid #d3d3d3;
+	font-family: 'Montserrat', sans-serif;
+	width: 100%;
+	border-radius: 8px;
+
+	option {
+		background: #fff;
+	}
 `;
 
 const File = styled.input`
@@ -44,18 +73,21 @@ const File = styled.input`
 
 const Description = styled.textarea`
 	padding: 8px;
-	background-color: #f0f0f0;
 	color: #303030;
-	border: none;
+	border: 1px solid #d3d3d3;
 	font-family: 'Montserrat', sans-serif;
+	width: 100%;
+	border-radius: 8px;
 `;
 const Button = styled.button`
 	border: none;
-	padding: 10px 12px;
+	padding: 12px 28px;
 	color: #fff;
+	font-size: 14px;
+	font-weight: 600;
 	background-color: orange;
 	border-radius: 8px;
-	margin: 12px 0;
+	margin: 6px 0;
 	cursor: pointer;
 `;
 
@@ -95,7 +127,6 @@ export const UpdateProduct = () => {
 		mainCategory: '',
 		subCategory: '',
 		productDescription: '',
-		subCategoryImg: '',
 		productImg: '',
 	});
 
@@ -133,9 +164,7 @@ export const UpdateProduct = () => {
 		if (!fileData.productImg) {
 			newErrors.productImg = 'Product Image is required';
 		}
-		if (!fileData.subCategoryImg) {
-			newErrors.subCategoryImg = 'SubCategory Image is required';
-		}
+
 		setErrors(newErrors);
 		return Object.values(newErrors).every((error) => error === '');
 	};
@@ -154,10 +183,9 @@ export const UpdateProduct = () => {
 		setIsSubmitting(true);
 		if (validateForm()) {
 			const formData = new FormData();
-			const subimage = new Blob([fileData.subCategoryImg], { type: fileData.subCategoryImg.type });
+
 			const productimage = new Blob([fileData.productImg], { type: fileData.productImg.type });
 
-			formData.append('subCategoryImg', subimage, fileData.subCategoryImg.name);
 			formData.append('productImg', productimage, fileData.productImg.name);
 			formData.append('productName', formInputs.productName);
 			formData.append('mainCategory', formInputs.mainCategory);
@@ -186,40 +214,67 @@ export const UpdateProduct = () => {
 		<Container>
 			<Title>Update Existing Product</Title>
 			<Form onSubmit={handleSubmit}>
-				<Label>Product Title</Label>
-				<Input type="text" placeholder="Enter Product Title" name="productName" value={formInputs.productName} onChange={handleChange} />
-				{errors.productName && <Errormessage> Title is required </Errormessage>}
-				<Label>Article #</Label>
-				<Input type="text" placeholder="Enter Article Number" name="article" value={formInputs.article} onChange={handleChange} />
-				{errors.article && <Errormessage> Article is required </Errormessage>}
-				<Label>Category</Label>
-				<Input type="text" placeholder="Enter Category" name="mainCategory" value={formInputs.mainCategory} onChange={handleChange} />
-				{errors.mainCategory && <Errormessage> Category is required </Errormessage>}
-				<Label>Subcategory</Label>
-				<Input type="text" placeholder="Enter Subcategory" name="subCategory" value={formInputs.subCategory} onChange={handleChange} />
-				{errors.subCategory && <Errormessage> Subcategory is required </Errormessage>}
-				<Label>Product Description</Label>
-				<Description
-					placeholder="Enter Description"
-					rows={8}
-					cols={24}
-					name="productDescription"
-					value={formInputs.productDescription}
-					onChange={handleChange}
-				/>
-				{errors.productDescription && <Errormessage> Description is required </Errormessage>}
+				<InputWrapper>
+					<Input type="text" placeholder="Enter Product Title" name="productName" value={formInputs.productName} onChange={handleChange} />
+					{errors.productName && <Errormessage> Title is required </Errormessage>}
+				</InputWrapper>
 
-				<Label>Upload SubCategory Image</Label>
-				<File type="file" name="subCategoryImg" onChange={handleFileChange} />
-				{errors.subCategoryImg && <Errormessage> Subcategory Image is required </Errormessage>}
+				<InputWrapper>
+					<Input type="text" placeholder="Enter Article Number" name="article" value={formInputs.article} onChange={handleChange} />
+					{errors.article && <Errormessage> Article is required </Errormessage>}
+				</InputWrapper>
 
-				<Label>Upload Product Image</Label>
-				<File type="file" name="productImg" onChange={handleFileChange} />
-				{errors.productImg && <Errormessage> Product Image is required </Errormessage>}
-				<Button type="submit" disabled={isSubmitting}>
-					Update
-				</Button>
-				{submitSuccess && <Successmessage> Product has been updated! </Successmessage>}
+				<InputWrapper>
+					<Select>
+						<option value="" hidden>
+							Choose Category
+						</option>
+						<option value={formInputs.mainCategory}> Casualwear </option>
+						<option value={formInputs.mainCategory}> Fitnesswear </option>
+						<option value={formInputs.mainCategory}> Leatherwear </option>
+					</Select>
+
+					{/* 	<Input type="text" placeholder="Enter Category" name="mainCategory" value={formInputs.mainCategory} onChange={handleChange} />
+					
+					*/}
+					{errors.mainCategory && <Errormessage> Category is required </Errormessage>}
+				</InputWrapper>
+
+				<InputWrapper>
+					<Select>
+						<option value="" hidden>
+							Choose Subcategory
+						</option>
+						<option value={formInputs.subCategory}> Casualwear </option>
+						<option value={formInputs.subCategory}> Fitnesswear </option>
+						<option value={formInputs.subCategory}> Leatherwear </option>
+					</Select>
+					{errors.subCategory && <Errormessage> Subcategory is required </Errormessage>}
+				</InputWrapper>
+
+				<InputWrapper>
+					<File type="file" id="files" name="productImg" onChange={handleFileChange} />
+					{errors.productImg && <Errormessage> Product Image is required </Errormessage>}
+				</InputWrapper>
+
+				<DescriptionWrapper>
+					<Description
+						placeholder="Enter Description"
+						rows={8}
+						cols={24}
+						name="productDescription"
+						value={formInputs.productDescription}
+						onChange={handleChange}
+					/>
+					{errors.productDescription && <Errormessage> Description is required </Errormessage>}
+				</DescriptionWrapper>
+
+				<InputWrapper>
+					<Button type="submit" disabled={isSubmitting}>
+						Update Product
+					</Button>
+					{submitSuccess && <Successmessage> Product has been updated! </Successmessage>}
+				</InputWrapper>
 			</Form>
 		</Container>
 	);
