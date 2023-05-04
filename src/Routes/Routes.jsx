@@ -9,7 +9,7 @@ import Subcategory from './../components/SubCategory';
 import ProductDetail from './../components/ProductDetail';
 import AdminLayout from '../layouts/AdminLayout';
 import Dashboard from '../admin/Dashboard';
-import AllCategories from '../admin/components/Categories';
+import AllCategories from '../admin/Components/AllCategories';
 import AllProducts from '../admin/Components/Products';
 import Inquiries from '../admin/Components/Inquiry';
 import ViewInquiry from '../admin/Components/ViewInquiry';

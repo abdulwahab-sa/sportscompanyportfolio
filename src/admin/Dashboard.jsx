@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useLogout } from '../hooks/useLogout';
 import Inquiry from './Components/Inquiry';
 import Sidebar from './Components/Sidebar';
-import Categories from './components/Categories';
+import Categories from './Components/AllCategories';
 import { NewCategory } from './Components/NewCategory';
 import MainPanel from './Components/MainPanel';
 
