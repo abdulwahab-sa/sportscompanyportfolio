@@ -2,8 +2,7 @@ import './PopularProduct.css';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { mobile } from '../responsive';
-import { useContext } from 'react';
-import { ProductContext } from '../context/ProductContext';
+import { useAPI } from '../context/ProductContext';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -43,7 +42,7 @@ const ProductWrapper = styled.div`
 	cursor: pointer;
 	box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 6px;
 	padding: 5px 0;
-	margin: 12px;
+	margin: 12px auto;
 	color: #303030;
 	border-radius: 5px;
 `;
@@ -78,13 +77,8 @@ const Button = styled.button`
 	}
 `;
 
-function getUniqueListBy(arr, key) {
-	return [...new Map(arr.map((item) => [item[key], item])).values()];
-}
-
 const PopularProducts = () => {
-	const { data } = useContext(ProductContext);
-	const uniqueData = getUniqueListBy(data, 'subCategory');
+	const { products } = useAPI();
 
 	const settings = {
 		infinite: true,
@@ -129,7 +123,7 @@ const PopularProducts = () => {
 			<Title> Popular Products </Title>
 			<Container>
 				<Slider {...settings}>
-					{data.map((product) => {
+					{products.map((product) => {
 						return (
 							<div>
 								<ProductWrapper>

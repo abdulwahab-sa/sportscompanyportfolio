@@ -2,6 +2,7 @@ import React from 'react';
 import ProductList from '../Tables/ProductTable';
 import styled from 'styled-components';
 import ProductTable from '../Tables/ProductTable';
+import { Link } from 'react-router-dom';
 
 const Container = styled.div`
 	display: flex;
@@ -45,7 +46,9 @@ const AllProducts = () => {
 		<Container>
 			<Wrapper>
 				<Heading>All Products</Heading>
-				<Button>Create Product</Button>
+				<Link to={'/createproduct'}>
+					<Button>Create Product</Button>
+				</Link>
 			</Wrapper>
 			<ProductTable />
 		</Container>

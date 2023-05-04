@@ -4,6 +4,7 @@ import { DeleteOutline } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useAPI } from '../../context/ProductContext';
 
 const dummyData = [
 	{
@@ -17,29 +18,18 @@ const dummyData = [
 ];
 
 export default function InquiryTable() {
-	const [data, setData] = useState(dummyData);
-	/*
-	const endPoint = 'https://tradecity.herokuapp.com/api/';
+	const { inquiries } = useAPI();
 
-	const fetchproducts = async () => {
-		axios
-			.get(endPoint)
-			.then((response) => {
-				const productData = response.data;
-				setData(productData);
-			})
-			.catch((error) => {
-				console.error(error);
-			});
-	};
+	const [data, setData] = useState(inquiries);
 
 	useEffect(() => {
-		fetchproducts();
-	}, []);
+		setData(inquiries);
+	}, [inquiries]);
 
-	*/
+	const endPoint = `https://tradecity.herokuapp.com/api/inquiry/`;
+
 	const handleDelete = (id) => {
-		setData(data.filter((item) => item.id !== id));
+		setData(data.filter((item) => item.inquiry_id !== id));
 		axios
 			.delete(`${endPoint}${id}`)
 			.then((response) => {
@@ -51,23 +41,23 @@ export default function InquiryTable() {
 	};
 
 	const columns = [
-		{ field: 'id', headerName: 'ID', width: 60 },
+		{ field: 'inquiry_id', headerName: 'ID', width: 60 },
 
-		{ field: 'name', headerName: 'Client Name', width: 150 },
-		{ field: 'email', headerName: 'Email', width: 150 },
+		{ field: 'inquiry_name', headerName: 'Client Name', width: 150 },
+		{ field: 'inquiry_email', headerName: 'Email', width: 150 },
 		{
-			field: 'phone',
+			field: 'inquiry_phone',
 			headerName: 'Contact',
 			width: 150,
 		},
 
 		{
-			field: 'requiredQty',
+			field: 'inquiry_req_qty',
 			headerName: 'Required Qty',
 			width: 120,
 		},
 		{
-			field: 'orderDetail',
+			field: 'order_detail',
 			headerName: 'Order Details',
 			width: 200,
 		},
@@ -78,10 +68,7 @@ export default function InquiryTable() {
 			renderCell: (params) => {
 				return (
 					<>
-						<Link to={'/update/' + params.row.id}>
-							<button className="productListEdit">View</button>
-						</Link>
-						<DeleteOutline className="productListDelete" onClick={() => handleDelete(params.row.id)} />
+						<DeleteOutline className="productListDelete" onClick={() => handleDelete(params.row.inquiry_id)} />
 					</>
 				);
 			},
@@ -90,7 +77,15 @@ export default function InquiryTable() {
 
 	return (
 		<div className="productList">
-			<DataGrid rows={data} disableSelectionOnClick columns={columns} pageSize={8} checkboxSelection sx={{ overflowX: 'scroll' }} />
+			<DataGrid
+				getRowId={(row) => row.inquiry_id}
+				rows={data}
+				disableSelectionOnClick
+				columns={columns}
+				pageSize={8}
+				checkboxSelection
+				sx={{ overflowX: 'scroll' }}
+			/>
 		</div>
 	);
 }

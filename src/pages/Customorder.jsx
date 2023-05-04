@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { BigScreen } from '../responsive';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Container = styled.div`
 	height: 100%;
@@ -143,6 +144,13 @@ const FileAttachment = styled.input`
 	}
 `;
 
+const Successmessage = styled.span`
+	color: green;
+	font-size: 12px;
+	display: block;
+	margin-top: 5px;
+`;
+
 const Errormessage = styled.span`
 	color: red;
 	font-size: 12px;
@@ -162,26 +170,30 @@ const Button = styled.button`
 `;
 function Customorder() {
 	const navigate = useNavigate();
-	const [formData, setFormData] = useState({
-		name: '',
-		email: '',
-		phone: '',
-		quantity: '',
-		orderDetails: '',
+	const endPoint = `https://tradecity.herokuapp.com/api/inquiry`;
+
+	const [InputData, setInputData] = useState({
+		inquiry_name: '',
+		inquiry_email: '',
+		inquiry_phone: '',
+		inquiry_req_qty: '',
+		order_detail: '',
 	});
 
 	const [fileData, setfileData] = useState([]);
 
 	const [errors, setErrors] = useState({
-		name: '',
-		phone: '',
-		email: '',
+		inquiry_name: '',
+		inquiry_phone: '',
+		inquiry_email: '',
+		inquiry_req_qty: '',
+		order_detail: '',
 	});
 
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
 	const handleChange = (event) => {
-		setFormData({ ...formData, [event.target.name]: event.target.value });
+		setInputData({ ...InputData, [event.target.name]: event.target.value });
 	};
 
 	const handleFileChange = (event) => {
@@ -193,17 +205,59 @@ function Customorder() {
 
 	const validateForm = () => {
 		let newErrors = {};
-		if (!formData.name) {
-			newErrors.name = 'Name is required';
+		if (!InputData.inquiry_name) {
+			newErrors.inquiry_name = 'Name is required';
 		}
-		if (!formData.phone) {
-			newErrors.phone = 'Phone is required';
+		if (!InputData.inquiry_phone) {
+			newErrors.inquiry_phone = 'Phone is required';
 		}
-		if (!formData.email) {
-			newErrors.email = 'Email is required';
+		if (!InputData.inquiry_email) {
+			newErrors.inquiry_email = 'Email is required';
 		}
+		if (!InputData.inquiry_req_qty) {
+			newErrors.inquiry_req_qty = 'Quantity is required';
+		}
+		if (!InputData.order_detail) {
+			newErrors.order_detail = 'Description is required';
+		}
+
 		setErrors(newErrors);
 		return Object.values(newErrors).every((error) => error === '');
+	};
+
+	/*const param = new URLSearchParams({
+  'username': 'user1',
+  'password': 'user1',
+  'client': 'requestip',
+  'expiration': 60,
+  'f': 'json',
+});
+
+axios({
+  method: 'post',
+  url: 'https://sampleserver6.arcgisonline.com/arcgis/tokens/generateToken',
+  data: param.toString()
+}) */
+
+	const param = new URLSearchParams({
+		inquiry_name: InputData.inquiry_name,
+		inquiry_phone: InputData.inquiry_phone,
+		inquiry_email: InputData.inquiry_email,
+		inquiry_req_qty: parseInt(InputData.inquiry_req_qty),
+		order_detail: InputData.order_detail,
+	});
+
+	const sendInquiry = async () => {
+		try {
+			const result = await axios({
+				method: 'post',
+				url: endPoint,
+				data: param.toString(),
+			});
+			if (result) console.log('success');
+		} catch (err) {
+			console.error(err);
+		}
 	};
 
 	const handleSubmit = (event) => {
@@ -211,17 +265,13 @@ function Customorder() {
 		setIsSubmitting(true);
 		if (validateForm()) {
 			const forminputs = new FormData();
-			forminputs.append('name', formData.name);
-			forminputs.append('phone', formData.phone);
-			forminputs.append('email', formData.email);
-			forminputs.append('quantity', formData.quantity);
-			forminputs.append('orderDetails', formData.orderDetails);
-			forminputs.append('attachment', fileData.attachment);
-			console.log(forminputs.get('attachment'));
-			console.log(forminputs.get('name'));
-			// API call
-			//sendInquiry(forminputs)
-			navigate('/thankyou');
+			forminputs.append('inquiry_name', InputData.inquiry_name);
+			forminputs.append('inquiry_phone', InputData.inquiry_phone);
+			forminputs.append('inquiry_email', InputData.inquiry_email);
+			forminputs.append('inquiry_req_qty', parseInt(InputData.inquiry_req_qty));
+			forminputs.append('order_detail', InputData.order_detail);
+
+			sendInquiry();
 		} else {
 			setIsSubmitting(false);
 		}
@@ -265,40 +315,63 @@ function Customorder() {
 							</FormStatement>
 							<FormInputs>
 								<InputWrapper>
-									<Input type="text" name="name" value={formData.name} placeholder="Your Name" onChange={handleChange} />
-									{errors.name && <Errormessage>{errors.name}</Errormessage>}
+									<Input type="text" name="inquiry_name" value={InputData.inquiry_name} placeholder="Your Name" onChange={handleChange} />
+									{errors.inquiry_name && <Errormessage>{errors.inquiry_name}</Errormessage>}
 								</InputWrapper>
 								<InputWrapper>
-									<Input type="text" name="email" value={formData.email} placeholder="Your Email" onChange={handleChange} />
-									{errors.email && <Errormessage>{errors.email}</Errormessage>}
+									<Input
+										type="text"
+										name="inquiry_email"
+										value={InputData.inquiry_email}
+										placeholder="Your Email"
+										onChange={handleChange}
+									/>
+									{errors.inquiry_email && <Errormessage>{errors.inquiry_email}</Errormessage>}
 								</InputWrapper>
 								<InputWrapper>
-									<Input type="text" name="phone" value={formData.phone} placeholder="Your Phone" onChange={handleChange} />
-									{errors.phone && <Errormessage>{errors.phone}</Errormessage>}
+									<Input
+										type="text"
+										name="inquiry_phone"
+										value={InputData.inquiry_phone}
+										placeholder="Your Phone"
+										onChange={handleChange}
+									/>
+									{errors.inquiry_phone && <Errormessage>{errors.inquiry_phone}</Errormessage>}
 								</InputWrapper>
 
 								<InputWrapper>
-									<Input type="text" name="quantity" value={formData.quantity} placeholder="Required Qty" onChange={handleChange} />
+									<Input
+										type="number"
+										name="inquiry_req_qty"
+										value={InputData.inquiry_req_qty}
+										placeholder="Required Qty"
+										onChange={handleChange}
+									/>
+									{errors.inquiry_req_qty && <Errormessage>{errors.inquiry_req_qty}</Errormessage>}
 								</InputWrapper>
 								<InputWrapper>
 									<Textarea
 										type="text"
-										name="orderDetails"
-										value={formData.orderDetails}
+										name="order_detail"
+										value={InputData.order_detail}
 										placeholder="Write your Order Details"
 										rows="6"
 										onChange={handleChange}
 									/>
+									{errors.order_detail && <Errormessage>{errors.order_detail}</Errormessage>}
 								</InputWrapper>
 							</FormInputs>
-
+							{/* 
 							<AttachmentWrapper>
 								<Label>Upload your logo, techpacks etc.</Label>
-								<FileAttachment name="attachment" value={formData.attachment} type="file" multiple onChange={handleFileChange} />
+								<FileAttachment name="attachment" value={InputData.attachment} type="file" multiple onChange={handleFileChange} />
 							</AttachmentWrapper>
+
+							*/}
 							<Button type="submit" disabled={isSubmitting}>
 								Get Quote
 							</Button>
+							{/*submitSuccess && <Successmessage> Inquiry has been sent! </Successmessage>*/}
 						</FormWrapper>
 					</Form>
 				</Right>

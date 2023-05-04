@@ -1,4 +1,4 @@
-import { createBrowserRouter, Route, createRoutesFromElements } from 'react-router-dom';
+import { createBrowserRouter, Route, createRoutesFromElements, Navigate } from 'react-router-dom';
 import RootLayout from '../layouts/RootLayout';
 import Home from './../pages/Home';
 import About from './../pages/About';
@@ -14,6 +14,11 @@ import AllProducts from '../admin/Components/Products';
 import Inquiries from '../admin/Components/Inquiry';
 import ViewInquiry from '../admin/Components/ViewInquiry';
 import { UpdateProduct } from '../admin/Components/UpdateProduct';
+import { NewProduct } from '../admin/Components/NewProduct';
+import { NewCategory } from '../admin/Components/NewCategory';
+import { UpdateCategory } from '../admin/Components/UpdateCategory';
+import Login from '../admin/Components/Login';
+import { useAuthContext } from './../hooks/useAuthContext';
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -29,12 +34,16 @@ const router = createBrowserRouter(
 			</Route>
 			<Route path="/" element={<AdminLayout />}>
 				<Route path="dashboard" element={<Dashboard />} />
-				<Route path="/allcategories" element={<AllCategories />} />
-				<Route path="/allproducts" element={<AllProducts />} />
-				<Route path="/updateproduct/:id" element={<UpdateProduct />} />
-				<Route path="/inquiries" element={<Inquiries />} />
-				<Route path="/viewinquiry" element={<ViewInquiry />} />
+				<Route path="allcategories" element={<AllCategories />} />
+				<Route path="createcategory" element={<NewCategory />} />
+				<Route path="updatecategory/:id" element={<UpdateCategory />} />
+				<Route path="allproducts" element={<AllProducts />} />
+				<Route path="createproduct" element={<NewProduct />} />
+				<Route path="updateproduct/:id" element={<UpdateProduct />} />
+				<Route path="inquiries" element={<Inquiries />} />
+				<Route path="viewinquiry" element={<ViewInquiry />} />
 			</Route>
+			<Route path="/login" element={<Login />} />
 		</>
 	)
 );

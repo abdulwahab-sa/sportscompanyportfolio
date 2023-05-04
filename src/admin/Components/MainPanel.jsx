@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import adminPanelImg from './../../images/Admin-Control-Panel.svg';
 import clothingIcon from './../../images/clothing-icon.png';
 import messageIcon from './../../images/message-icon.png';
+import { useAPI } from '../../context/ProductContext';
 
 const Container = styled.div`
 	width: 100%;
@@ -60,22 +61,27 @@ const Img = styled.img`
 const IconImg = styled.img`
 	width: 60px;
 `;
-const data = [
-	{
-		id: 1,
-		img: clothingIcon,
-		title: 'Total Products',
-		num: '80',
-	},
-	{
-		id: 2,
-		img: messageIcon,
-		title: 'Total Inquiries',
-		num: '10',
-	},
-];
 
 const MainPanel = () => {
+	const { products, inquiries } = useAPI();
+
+	const data = [
+		{
+			id: 1,
+			img: clothingIcon,
+			title: 'Total Products',
+			num: products.length,
+		},
+		{
+			id: 2,
+			img: messageIcon,
+			title: 'Total Inquiries',
+			num: inquiries.length,
+		},
+	];
+
+	const date = new Date();
+
 	return (
 		<Container>
 			<WelcomeWrapper>
@@ -83,7 +89,7 @@ const MainPanel = () => {
 					<Heading>
 						Welcome! <br /> Trade City Dashboard
 					</Heading>
-					<Span> Today is 12/04/2023, Tuesday </Span>
+					<Span> Today is 27-04-23 </Span>
 				</Wrapper>
 				<Img src={adminPanelImg} />
 			</WelcomeWrapper>

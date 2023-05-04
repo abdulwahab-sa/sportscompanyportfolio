@@ -1,8 +1,6 @@
-import { allProducts, finalData, productsDropdown } from '../data';
 import styled from 'styled-components';
 import { Link, useParams } from 'react-router-dom';
-import { useContext } from 'react';
-import { ProductContext } from '../context/ProductContext';
+import { useAPI } from '../context/ProductContext';
 import { DataArrayRounded } from '@mui/icons-material';
 
 const Container = styled.div`
@@ -60,16 +58,20 @@ const Button = styled.button`
 
 const SubCategory = () => {
 	const { category, subcategory } = useParams();
-	const { data } = useContext(ProductContext);
+	const { subcategories, products } = useAPI();
 
-	const subCatProd = data.filter((product) => product.subCategory === subcategory);
+	// find the id of the  subcategory based on its name
+	const subCategoryId = subcategories.find((s) => s.subcategory_title.toLowerCase() === subcategory.toLowerCase())?.subcategory_id;
+
+	// filter the subcategories to get only the ones belonging to the main category
+	const reqProducts = products.filter((s) => s.subcategory_subcategory_id === subCategoryId);
 
 	return (
 		<Container>
-			{subCatProd.map((product) => {
+			{reqProducts.map((product) => {
 				return (
-					<ProductWrapper key={product.id}>
-						<Image src={`data:image/jpeg;base64,${product.productImg}`} />
+					<ProductWrapper key={product.product_id}>
+						<Image src={`data:image/jpeg;base64,${product.product_img}`} />
 						<Title>{product.productName}</Title>
 						<Article>{product.article}</Article>
 						<Link to={`/${product.mainCategory}/${product.subCategory}/${product.id}`}>

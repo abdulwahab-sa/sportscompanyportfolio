@@ -4,29 +4,23 @@ import { DeleteOutline } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Buffer } from 'buffer';
+import { useAPI } from '../../context/ProductContext';
 
 export default function ProductTable() {
-	const [data, setData] = useState([]);
-	const endPoint = 'https://tradecity.herokuapp.com/api/';
+	const { products } = useAPI();
 
-	const fetchproducts = async () => {
-		axios
-			.get(endPoint)
-			.then((response) => {
-				const productData = response.data;
-				setData(productData);
-			})
-			.catch((error) => {
-				console.error(error);
-			});
-	};
+	const [data, setData] = useState(products);
 
 	useEffect(() => {
-		fetchproducts();
-	}, []);
+		setData(products);
+		console.log(products);
+	}, [products]);
+
+	const endPoint = `https://tradecity.herokuapp.com/api/products/`;
 
 	const handleDelete = (id) => {
-		setData(data.filter((item) => item.id !== id));
+		setData(data.filter((item) => item.product_id !== id));
 		axios
 			.delete(`${endPoint}${id}`)
 			.then((response) => {
@@ -38,47 +32,28 @@ export default function ProductTable() {
 	};
 
 	const columns = [
-		{ field: 'id', headerName: 'ID', width: 60 },
+		{ field: 'product_id', headerName: 'ID', width: 60 },
 		{
-			field: 'productImg',
+			field: 'product_img',
 			headerName: 'Product',
 			width: 100,
 			renderCell: (params) => {
 				return (
 					<div className="productListItem">
-						<img className="productListImg" src={`data:image/jpeg;base64,${params.row.productImg}`} alt="" />
+						<img
+							className="productListImg"
+							src={`data:image/png;base64,${Buffer.from(params.row.product_img.data).toString('base64')}`}
+							alt=""
+						/>
 						{params.row.name}
 					</div>
 				);
 			},
 		},
-		{ field: 'productName', headerName: 'Product Title', width: 180 },
-		{ field: 'mainCategory', headerName: 'Category', width: 150 },
+		{ field: 'product_title', headerName: 'Product Title', width: 180 },
+
 		{
-			field: 'subCategory',
-			headerName: 'SubCategory',
-			width: 200,
-		},
-		{
-			field: 'subCategoryImg',
-			headerName: 'SubCategory Img',
-			width: 100,
-			renderCell: (params) => {
-				return (
-					<div className="productListItem">
-						<img className="productListImg" src={`data:image/jpeg;base64,${params.row.subCategoryImg}`} alt="" />
-						{params.row.name}
-					</div>
-				);
-			},
-		},
-		{
-			field: 'article',
-			headerName: 'Article #',
-			width: 160,
-		},
-		{
-			field: 'productDescription',
+			field: 'product_description',
 			headerName: 'Description',
 			width: 200,
 		},
@@ -89,10 +64,10 @@ export default function ProductTable() {
 			renderCell: (params) => {
 				return (
 					<>
-						<Link to={'/update/' + params.row.id}>
+						<Link to={'/updateproduct/' + params.row.product_id}>
 							<button className="productListEdit">Edit</button>
 						</Link>
-						<DeleteOutline className="productListDelete" onClick={() => handleDelete(params.row.id)} />
+						<DeleteOutline className="productListDelete" onClick={() => handleDelete(params.row.product_id)} />
 					</>
 				);
 			},
@@ -102,6 +77,7 @@ export default function ProductTable() {
 	return (
 		<div className="productList">
 			<DataGrid
+				getRowId={(row) => row.product_id}
 				rows={data}
 				disableSelectionOnClick
 				columns={columns}

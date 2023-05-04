@@ -1,9 +1,8 @@
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { useContext } from 'react';
-import { ProductContext } from '../context/ProductContext';
 import { MediumScreen } from '../responsive';
+import { useAPI } from '../context/ProductContext';
 
 const Container = styled.div`
 	height: 100%;
@@ -67,21 +66,22 @@ const Button = styled.button`
 `;
 
 const Product = () => {
-	const { data } = useContext(ProductContext);
 	const { productId } = useParams();
-	const productItem = data.find((prod) => prod.id === parseInt(productId));
-	const { productImg, productName, article, productDescription } = productItem;
+	const { products } = useAPI;
+
+	const productItem = products.find((prod) => prod.product_id === parseInt(productId));
+	const { product_img, product_title, product_description } = productItem;
 
 	return (
 		<Container>
 			<Wrapper>
 				<ImgContainer>
-					<Image src={`data:image/jpeg;base64,${productImg}`} />
+					<Image src={`data:image/jpeg;base64,${product_img}`} />
 				</ImgContainer>
 				<InfoContainer>
-					<Title>{productName}</Title>
-					<Article> {article}</Article>
-					<Desc>{productDescription}</Desc>
+					<Title>{product_title}</Title>
+					<Article> TC-01</Article>
+					<Desc>{product_description}</Desc>
 					<Link to={'/Customorder'} style={{ textDecoration: 'none', border: 'none' }}>
 						<Button>SEND INQUIRY</Button>
 					</Link>

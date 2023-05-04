@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { FaSearch } from 'react-icons/fa';
 import { Link, useParams } from 'react-router-dom';
-import { ProductContext } from '../context/ProductContext';
+import { useAPI } from '../context/ProductContext';
 
 const Container = styled.div`
 	color: #303030;
@@ -104,34 +104,31 @@ const CatTitle = styled.h2`
 	cursor: pointer;
 `;
 
-function getUniqueListBy(arr, key) {
-	return [...new Map(arr.map((item) => [item[key], item])).values()];
-}
-
 function MainCategory() {
-	const { data } = useContext(ProductContext);
+	const { categories, subcategories } = useAPI();
 	const { category } = useParams();
 
-	const reqsubcategories = data.filter((el) => {
-		return el.mainCategory.toLowerCase() == category.toLowerCase();
-	});
-	const uniquesubcategory = getUniqueListBy(reqsubcategories, 'subCategory');
+	// find the id of the main category based on its name
+	const mainCategoryId = categories.find((c) => c.category_title.toLowerCase() === category.toLowerCase())?.category_id;
+
+	// filter the subcategories to get only the ones belonging to the main category
+	const reqsubcategories = subcategories.filter((s) => s.category_category_id === mainCategoryId);
 
 	return (
 		<>
 			<Title> {category.toUpperCase()} </Title>
 			<Container>
-				{uniquesubcategory.map((items) => {
+				{reqsubcategories.map((items) => {
 					return (
-						<Link to={`/${category}/${items.subCategory}`}>
-							<Wrapper key={items.id}>
-								<Image src={`data:image/jpeg;base64,${items.subCategoryImg}`} />
+						<Link to={`/${category}/${items.subcategory_title}`}>
+							<Wrapper key={items.subcategory_id}>
+								<Image src={`data:image/jpeg;base64,${items.subcategory_img}`} />
 								<Info>
 									<Icon>
 										<FaSearch />
 									</Icon>
 								</Info>
-								<CatTitle>{items.subCategory}</CatTitle>
+								<CatTitle>{items.subcategory_title}</CatTitle>
 							</Wrapper>
 						</Link>
 					);

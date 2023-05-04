@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
+import { useAPI } from '../../context/ProductContext';
 
 const Container = styled.div`
 	height: 100%;
@@ -11,17 +13,33 @@ const Container = styled.div`
 	font-family: 'Montserrat', sans-serif;
 `;
 const Title = styled.h2`
-	font-size: 1.8rem;
-	margin: 1rem auto;
+	margin: 2rem auto;
+	font-size: 28px;
 	color: teal;
+	font-weight: 500;
+	text-align: center;
 `;
+
 const Form = styled.form`
 	height: 100%;
-	text-align: left;
 	margin: 2rem auto;
 	display: flex;
+	justify-content: center;
+	align-items: center;
 	flex-direction: column;
-	width: 250px;
+	width: 100%;
+`;
+
+const InputWrapper = styled.div`
+	width: 400px;
+	margin: 12px;
+	text-align: center;
+	color: #303030;
+`;
+
+const DescriptionWrapper = styled.div`
+	width: 700px;
+	margin: 12px;
 `;
 
 const Label = styled.label`
@@ -30,35 +48,49 @@ const Label = styled.label`
 `;
 const Input = styled.input`
 	//border: 0.5px solid #303030;
-	padding: 10px;
-	background-color: #f0f0f0;
+	padding: 14px 8px;
+	border: 1px solid #d3d3d3;
 	color: #303030;
-	border: none;
 	font-family: 'Montserrat', sans-serif;
-	outline: none;
+	width: 100%;
+	border-radius: 8px;
+`;
+
+const Select = styled.select`
+	padding: 14px 8px;
+	color: #303030;
+	border: 1px solid #d3d3d3;
+	font-family: 'Montserrat', sans-serif;
+	width: 100%;
+	border-radius: 8px;
+
+	option {
+		background: #fff;
+	}
 `;
 
 const File = styled.input`
-	margin: 8px 0;
+	margin: 12px 0;
 `;
 
 const Description = styled.textarea`
 	padding: 8px;
-	background-color: #f0f0f0;
 	color: #303030;
-	border: none;
+	border: 1px solid #d3d3d3;
 	font-family: 'Montserrat', sans-serif;
+	width: 100%;
+	border-radius: 8px;
 `;
 const Button = styled.button`
 	border: none;
-	padding: 10px 12px;
+	padding: 12px 28px;
 	color: #fff;
-	background-color: teal;
+	font-size: 14px;
+	font-weight: 600;
+	background-color: orange;
 	border-radius: 8px;
-	margin: 12px 0;
+	margin: 6px 0;
 	cursor: pointer;
-	font-family: inherit;
-	font-size: 16px;
 `;
 
 const Successmessage = styled.span`
@@ -75,26 +107,21 @@ const Errormessage = styled.span`
 `;
 
 export const NewCategory = () => {
+	const { categories } = useAPI();
+
+	const endPoint = `https://tradecity.herokuapp.com/api/subcategories`;
+
 	const [formInputs, setFormInputs] = useState({
-		productName: '',
-		article: '',
-		mainCategory: '',
-		subCategory: '',
-		productDescription: '',
-		//subCategoryImg: '',
-		//productImg: '',
+		subcategory_title: '',
+		category_category_id: '',
 	});
 
 	const [fileData, setfileData] = useState([]);
 
 	const [errors, setErrors] = useState({
-		productName: '',
-		article: '',
-		mainCategory: '',
-		subCategory: '',
-		productDescription: '',
-		subCategoryImg: '',
-		productImg: '',
+		category_category_id: '',
+		subcategory_title: '',
+		subcategory_img: '',
 	});
 
 	const [isSubmitting, setIsSubmitting] = useState(false);
@@ -102,6 +129,10 @@ export const NewCategory = () => {
 
 	const handleChange = (event) => {
 		setFormInputs({ ...formInputs, [event.target.name]: event.target.value });
+	};
+
+	const handleOptionsChange = (e) => {
+		setFormInputs({ ...formInputs, [e.target.name]: parseInt(e.target.value) });
 	};
 
 	const handleFileChange = (event) => {
@@ -113,37 +144,24 @@ export const NewCategory = () => {
 
 	const validateForm = () => {
 		let newErrors = {};
-		if (!formInputs.productName) {
-			newErrors.productName = 'Title is required';
+		if (!formInputs.subcategory_title) {
+			newErrors.subcategory_title = 'Title is required';
 		}
-		if (!formInputs.article) {
-			newErrors.article = 'Article is required';
+		if (!formInputs.category_category_id) {
+			newErrors.category_category_id = 'Category is required';
 		}
-		if (!formInputs.mainCategory) {
-			newErrors.mainCategory = 'Category is required';
+		if (!fileData.subcategory_img) {
+			newErrors.subcategory_img = 'Subcategory Image is required';
 		}
-		if (!formInputs.subCategory) {
-			newErrors.subCategory = 'Subcategory is required';
-		}
-		if (!formInputs.productDescription) {
-			newErrors.productDescription = 'Description is required';
-		}
-		if (!fileData.productImg) {
-			newErrors.productImg = 'Product Image is required';
-		}
-		if (!fileData.subCategoryImg) {
-			newErrors.subCategoryImg = 'SubCategory Image is required';
-		}
+
 		setErrors(newErrors);
 		return Object.values(newErrors).every((error) => error === '');
 	};
 
-	const createProduct = async (productData) => {
-		const endPoint = 'https://tradecity.herokuapp.com/api/';
-
+	const createSubcategory = async (subcategoryData) => {
 		try {
-			const result = await axios.post(endPoint, productData);
-			setSubmitSuccess(true);
+			const result = await axios.post(endPoint, subcategoryData);
+			result && setSubmitSuccess(!submitSuccess);
 		} catch (err) {
 			console.error(err);
 		}
@@ -154,29 +172,14 @@ export const NewCategory = () => {
 		setIsSubmitting(true);
 		if (validateForm()) {
 			const formData = new FormData();
-			const subimage = new Blob([fileData.subCategoryImg], { type: fileData.subCategoryImg.type });
-			const productimage = new Blob([fileData.productImg], { type: fileData.productImg.type });
 
-			formData.append('subCategoryImg', subimage, fileData.subCategoryImg.name);
-			formData.append('productImg', productimage, fileData.productImg.name);
-			formData.append('productName', formInputs.productName);
-			formData.append('mainCategory', formInputs.mainCategory);
-			formData.append('subCategory', formInputs.subCategory);
-			formData.append('productDescription', formInputs.productDescription);
-			formData.append('article', formInputs.article);
+			const subcategoryImage = new Blob([fileData.subcategory_img], { type: fileData.subcategory_img.type });
 
-			createProduct(formData);
+			formData.append('subcategory_img', subcategoryImage, fileData.subcategory_img.name);
+			formData.append('category_category_id', parseInt(formInputs.category_category_id));
+			formData.append('subcategory_title', formInputs.subcategory_title);
 
-			setFormInputs({
-				productName: '',
-				article: '',
-				mainCategory: '',
-				subCategory: '',
-				productDescription: '',
-			});
-
-			setfileData([]);
-			// API call
+			createSubcategory(formData);
 		} else {
 			setIsSubmitting(false);
 		}
@@ -186,21 +189,50 @@ export const NewCategory = () => {
 		<Container>
 			<Title>Add New Category</Title>
 			<Form onSubmit={handleSubmit}>
-				<Label>Category</Label>
-				<Input type="text" placeholder="Enter Category" name="mainCategory" value={formInputs.mainCategory} onChange={handleChange} />
-				{errors.mainCategory && <Errormessage> Category is required </Errormessage>}
-				<Label>Subcategory</Label>
-				<Input type="text" placeholder="Enter Subcategory" name="subCategory" value={formInputs.subCategory} onChange={handleChange} />
-				{errors.subCategory && <Errormessage> Subcategory is required </Errormessage>}
+				<InputWrapper>
+					<Select name="category_category_id" onChange={handleOptionsChange}>
+						<option value="" hidden>
+							Choose Category
+						</option>
+						{categories.map((el) => {
+							return (
+								<option key={el.category_id} value={el.category_id}>
+									{' '}
+									{el.category_title}{' '}
+								</option>
+							);
+						})}
+					</Select>
 
-				<Label>Upload SubCategory Image</Label>
-				<File type="file" name="subCategoryImg" onChange={handleFileChange} />
-				{errors.subCategoryImg && <Errormessage> Subcategory Image is required </Errormessage>}
+					{/* 	<Input type="text" placeholder="Enter Category" name="mainCategory" value={formInputs.mainCategory} onChange={handleChange} />
+					
+					*/}
+					{errors.category_category_id && <Errormessage> {errors.category_category_id} </Errormessage>}
+				</InputWrapper>
 
-				<Button type="submit" disabled={isSubmitting}>
-					Create
-				</Button>
-				{submitSuccess && <Successmessage> Category has been created! </Successmessage>}
+				<InputWrapper>
+					<Input
+						type="text"
+						placeholder="Enter Subcategory"
+						name="subcategory_title"
+						value={formInputs.subcategory_title}
+						onChange={handleChange}
+					/>
+
+					{errors.subcategory_title && <Errormessage> {errors.subcategory_title}</Errormessage>}
+				</InputWrapper>
+
+				<InputWrapper>
+					<File type="file" id="files" name="subcategory_img" onChange={handleFileChange} />
+					{errors.subcategory_img && <Errormessage> {errors.subcategory_img} </Errormessage>}
+				</InputWrapper>
+
+				<InputWrapper>
+					<Button type="submit" disabled={isSubmitting}>
+						Create Subcategory
+					</Button>
+					{submitSuccess && <Successmessage> Subcategory has been created! </Successmessage>}
+				</InputWrapper>
 			</Form>
 		</Container>
 	);

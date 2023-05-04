@@ -25,7 +25,8 @@ const Form = styled.form`
 	margin: 2rem auto;
 	display: flex;
 	justify-content: center;
-	flex-wrap: wrap;
+	align-items: center;
+	flex-direction: column;
 	width: 100%;
 `;
 
@@ -105,28 +106,29 @@ const Errormessage = styled.span`
 	display: block;
 `;
 
-export const UpdateProduct = () => {
-	const { categories, subcategories, products } = useAPI();
+export const UpdateCategory = () => {
+	const { categories, subcategories } = useAPI();
+	const { id } = useParams();
 
-	const endPoint = `https://tradecity.herokuapp.com/api/products`;
+	const getCategory = subcategories.filter((el) => el.subcategory_id === parseInt(id));
+
+	useEffect(() => {
+		getCategory;
+	}, [id]);
+
+	const endPoint = `https://tradecity.herokuapp.com/api/subcategories`;
 
 	const [formInputs, setFormInputs] = useState({
-		product_title: '',
-		product_description: '',
-		article: '',
-		subcategory_subcategory_id: '',
+		subcategory_title: '',
 		category_category_id: '',
 	});
 
 	const [fileData, setfileData] = useState([]);
 
 	const [errors, setErrors] = useState({
-		product_title: '',
-		product_description: '',
-		article: '',
-		subcategory_subcategory_id: '',
 		category_category_id: '',
-		product_img: '',
+		subcategory_title: '',
+		subcategory_img: '',
 	});
 
 	const [isSubmitting, setIsSubmitting] = useState(false);
@@ -149,32 +151,23 @@ export const UpdateProduct = () => {
 
 	const validateForm = () => {
 		let newErrors = {};
-		if (!formInputs.product_title) {
-			newErrors.product_title = 'Title is required';
-		}
-		if (!formInputs.article) {
-			newErrors.article = 'Article is required';
+		if (!formInputs.subcategory_title) {
+			newErrors.subcategory_title = 'Title is required';
 		}
 		if (!formInputs.category_category_id) {
 			newErrors.category_category_id = 'Category is required';
 		}
-		if (!formInputs.subcategory_subcategory_id) {
-			newErrors.subcategory_subcategory_id = 'Subcategory is required';
-		}
-		if (!formInputs.product_description) {
-			newErrors.product_description = 'Description is required';
-		}
-		if (!fileData.productImg) {
-			newErrors.product_img = 'Product Image is required';
+		if (!fileData.subcategory_img) {
+			newErrors.subcategory_img = 'Subcategory Image is required';
 		}
 
 		setErrors(newErrors);
 		return Object.values(newErrors).every((error) => error === '');
 	};
 
-	const updateProduct = async (productData) => {
+	const updateSubcategory = async (subcategoryData) => {
 		try {
-			const result = await axios.put(endPoint, productData);
+			const result = await axios.put(endPoint, subcategoryData);
 			result && setSubmitSuccess(!submitSuccess);
 		} catch (err) {
 			console.error(err);
@@ -187,16 +180,13 @@ export const UpdateProduct = () => {
 		if (validateForm()) {
 			const formData = new FormData();
 
-			const productimage = new Blob([fileData.product_img], { type: fileData.product_img.type });
+			const subcategoryImage = new Blob([fileData.subcategory_img], { type: fileData.subcategory_img.type });
 
-			formData.append('product_img', productimage, fileData.product_img.name);
-			formData.append('product_title', formInputs.product_title);
-			formData.append('category_category_id', formInputs.category_category_id);
-			formData.append('subcatgory_subcategory_id', formInputs.subcategory_subcategory_id);
-			formData.append('product_description', formInputs.product_description);
-			formData.append('article', formInputs.article);
+			formData.append('subcategory_img', subcategoryImage, fileData.subcategory_img.name);
+			formData.append('category_category_id', parseInt(formInputs.category_category_id));
+			formData.append('subcategory_title', formInputs.subcategory_title);
 
-			updateProduct(formData);
+			updateSubcategory(formData);
 		} else {
 			setIsSubmitting(false);
 		}
@@ -204,24 +194,8 @@ export const UpdateProduct = () => {
 
 	return (
 		<Container>
-			<Title>Update Existing Product</Title>
+			<Title>Update Category</Title>
 			<Form onSubmit={handleSubmit}>
-				<InputWrapper>
-					<Input
-						type="text"
-						placeholder="Enter Product Title"
-						name="product_title"
-						value={formInputs.product_title}
-						onChange={handleChange}
-					/>
-					{errors.product_title && <Errormessage> {errors.product_title} </Errormessage>}
-				</InputWrapper>
-
-				<InputWrapper>
-					<Input type="text" placeholder="Enter Article Number" name="article" value={formInputs.article} onChange={handleChange} />
-					{errors.article && <Errormessage> {errors.article} </Errormessage>}
-				</InputWrapper>
-
 				<InputWrapper>
 					<Select name="category_category_id" onChange={handleOptionsChange}>
 						<option value="" hidden>
@@ -237,48 +211,34 @@ export const UpdateProduct = () => {
 						})}
 					</Select>
 
+					{/* 	<Input type="text" placeholder="Enter Category" name="mainCategory" value={formInputs.mainCategory} onChange={handleChange} />
+					
+					*/}
 					{errors.category_category_id && <Errormessage> {errors.category_category_id} </Errormessage>}
 				</InputWrapper>
 
 				<InputWrapper>
-					<Select name="subcategory_subcategory_id" onChange={handleOptionsChange}>
-						<option value="" hidden>
-							Choose Subcategory
-						</option>
-						{subcategories.map((el) => {
-							return (
-								<option key={el.subcategory_id} value={el.subcategory_id}>
-									{' '}
-									{el.subcategory_title}{' '}
-								</option>
-							);
-						})}
-					</Select>
-					{errors.subcategory_subcategory_id && <Errormessage> {errors.subcategory_subcategory_id} </Errormessage>}
+					<Input
+						type="text"
+						placeholder="Enter Subcategory"
+						name="subcategory_title"
+						value={formInputs.subcategory_title}
+						onChange={handleChange}
+					/>
+
+					{errors.subcategory_title && <Errormessage> {errors.subcategory_title}</Errormessage>}
 				</InputWrapper>
 
 				<InputWrapper>
-					<File type="file" id="files" name="product_img" onChange={handleFileChange} />
-					{errors.product_img && <Errormessage> {errors.product_img} </Errormessage>}
+					<File type="file" id="files" name="subcategory_img" onChange={handleFileChange} />
+					{errors.subcategory_img && <Errormessage> {errors.subcategory_img} </Errormessage>}
 				</InputWrapper>
-
-				<DescriptionWrapper>
-					<Description
-						placeholder="Enter Description"
-						rows={8}
-						cols={24}
-						name="product_description"
-						value={formInputs.product_description}
-						onChange={handleChange}
-					/>
-					{errors.product_description && <Errormessage> {errors.product_description} </Errormessage>}
-				</DescriptionWrapper>
 
 				<InputWrapper>
 					<Button type="submit" disabled={isSubmitting}>
-						Update Product
+						Update Subcategory
 					</Button>
-					{submitSuccess && <Successmessage> Product has been updated! </Successmessage>}
+					{submitSuccess && <Successmessage> Subcategory has been updated! </Successmessage>}
 				</InputWrapper>
 			</Form>
 		</Container>

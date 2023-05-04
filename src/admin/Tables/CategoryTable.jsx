@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import dummyImg from './../../images/casual.png';
+import { useAPI } from '../../context/ProductContext';
+import { Buffer } from 'buffer';
 
 const dummyData = [
 	{
@@ -16,26 +18,15 @@ const dummyData = [
 ];
 
 export default function CategoryTable() {
-	const [data, setData] = useState(dummyData);
-	const endPoint = 'https://tradecity.herokuapp.com/api/';
+	const { categories, subcategories } = useAPI();
 
-	/*
-	const fetchproducts = async () => {
-		axios
-			.get(endPoint)
-			.then((response) => {
-				const productData = response.data;
-				setData(productData);
-			})
-			.catch((error) => {
-				console.error(error);
-			});
-	};
+	const [data, setData] = useState(subcategories);
 
 	useEffect(() => {
-		fetchproducts();
-	}, []);
-*/
+		setData(subcategories);
+		console.log(subcategories);
+	}, [subcategories]);
+
 	const handleDelete = (id) => {
 		setData(data.filter((item) => item.id !== id));
 		axios
@@ -49,22 +40,25 @@ export default function CategoryTable() {
 	};
 
 	const columns = [
-		{ field: 'id', headerName: 'ID', width: 60 },
+		{ field: 'subcategory_id', headerName: 'ID', width: 60 },
 
-		{ field: 'mainCategory', headerName: 'Main Category', width: 150 },
 		{
-			field: 'subCategory',
+			field: 'subcategory_title',
 			headerName: 'SubCategory',
 			width: 200,
 		},
 		{
-			field: 'subCategoryImg',
+			field: 'subcategory_img',
 			headerName: 'SubCategory Img',
-			width: 100,
+			width: 150,
 			renderCell: (params) => {
 				return (
 					<div className="productListItem">
-						<img className="productListImg" src={params.row.subCategoryImg} alt="" />
+						<img
+							className="productListImg"
+							src={`data:image/png;base64,${Buffer.from(params.row.subcategory_img.data).toString('base64')}`}
+							alt=""
+						/>
 						{params.row.name}
 					</div>
 				);
@@ -77,7 +71,7 @@ export default function CategoryTable() {
 			renderCell: (params) => {
 				return (
 					<>
-						<Link to={'/update/' + params.row.id}>
+						<Link to={'/updatecategory/' + params.row.subcategory_id}>
 							<button className="productListEdit">Edit</button>
 						</Link>
 						<DeleteOutline className="productListDelete" onClick={() => handleDelete(params.row.id)} />
@@ -89,7 +83,14 @@ export default function CategoryTable() {
 
 	return (
 		<div className="productList">
-			<DataGrid rows={data} disableSelectionOnClick columns={columns} pageSize={8} checkboxSelection />
+			<DataGrid
+				getRowId={(row) => row.subcategory_id}
+				rows={data}
+				disableSelectionOnClick
+				columns={columns}
+				pageSize={8}
+				checkboxSelection
+			/>
 		</div>
 	);
 }
