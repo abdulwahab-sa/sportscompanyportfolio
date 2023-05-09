@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { MediumScreen } from '../responsive';
 import { useAPI } from '../context/ProductContext';
+import { Buffer } from 'buffer';
 
 const Container = styled.div`
 	height: 100%;
@@ -30,7 +31,7 @@ const Image = styled.img`
 
 const InfoContainer = styled.div`
 	flex: 1;
-	padding: 0px 50px;
+	padding: 20px 50px;
 	color: #303030;
 
 	font-family: 'Montserrat', sans-serif;
@@ -65,30 +66,31 @@ const Button = styled.button`
 	}
 `;
 
-const Product = () => {
+const ProductDetail = () => {
 	const { productId } = useParams();
-	const { products } = useAPI;
-
+	const { products } = useAPI();
+	console.log(products);
 	const productItem = products.find((prod) => prod.product_id === parseInt(productId));
-	const { product_img, product_title, product_description } = productItem;
 
 	return (
 		<Container>
-			<Wrapper>
-				<ImgContainer>
-					<Image src={`data:image/jpeg;base64,${product_img}`} />
-				</ImgContainer>
-				<InfoContainer>
-					<Title>{product_title}</Title>
-					<Article> TC-01</Article>
-					<Desc>{product_description}</Desc>
-					<Link to={'/Customorder'} style={{ textDecoration: 'none', border: 'none' }}>
-						<Button>SEND INQUIRY</Button>
-					</Link>
-				</InfoContainer>
-			</Wrapper>
+			{
+				<Wrapper>
+					<ImgContainer>
+						<Image src={`data:image/png;base64,${Buffer.from(productItem.product_img.data).toString('base64')}`} />
+					</ImgContainer>
+					<InfoContainer>
+						<Title>{productItem.product_title}</Title>
+						<Article> {productItem.product_article}</Article>
+						<Desc>{productItem.product_description}</Desc>
+						<Link to={'/Customorder'} style={{ textDecoration: 'none', border: 'none' }}>
+							<Button>SEND INQUIRY</Button>
+						</Link>
+					</InfoContainer>
+				</Wrapper>
+			}
 		</Container>
 	);
 };
 
-export default Product;
+export default ProductDetail;

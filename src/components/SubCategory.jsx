@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Link, useParams } from 'react-router-dom';
 import { useAPI } from '../context/ProductContext';
-import { DataArrayRounded } from '@mui/icons-material';
+import { Buffer } from 'buffer';
 
 const Container = styled.div`
 	width: 100%;
@@ -12,6 +12,7 @@ const Container = styled.div`
 	justify-content: center;
 	color: #303030;
 	font-family: 'Montserrat', sans-serif;
+	padding: 20px 0;
 `;
 
 const ProductWrapper = styled.div`
@@ -65,16 +66,16 @@ const SubCategory = () => {
 
 	// filter the subcategories to get only the ones belonging to the main category
 	const reqProducts = products.filter((s) => s.subcategory_subcategory_id === subCategoryId);
-
+	console.log(products);
 	return (
 		<Container>
 			{reqProducts.map((product) => {
 				return (
 					<ProductWrapper key={product.product_id}>
-						<Image src={`data:image/jpeg;base64,${product.product_img}`} />
-						<Title>{product.productName}</Title>
-						<Article>{product.article}</Article>
-						<Link to={`/${product.mainCategory}/${product.subCategory}/${product.id}`}>
+						<Image src={`data:image/png;base64,${Buffer.from(product.product_img.data).toString('base64')}`} />
+						<Title>{product.product_title}</Title>
+						<Article>{product.product_article}</Article>
+						<Link to={`/${category}/${subcategory}/${product.product_id}`}>
 							<Button>Custom Order</Button>
 						</Link>
 					</ProductWrapper>

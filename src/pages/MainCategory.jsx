@@ -3,10 +3,11 @@ import styled from 'styled-components';
 import { FaSearch } from 'react-icons/fa';
 import { Link, useParams } from 'react-router-dom';
 import { useAPI } from '../context/ProductContext';
+import { Buffer } from 'buffer';
 
 const Container = styled.div`
 	color: #303030;
-	padding: 10px;
+	padding: 40px 10px;
 	display: flex;
 	justify-content: center;
 	flex-wrap: wrap;
@@ -122,7 +123,7 @@ function MainCategory() {
 					return (
 						<Link to={`/${category}/${items.subcategory_title}`}>
 							<Wrapper key={items.subcategory_id}>
-								<Image src={`data:image/jpeg;base64,${items.subcategory_img}`} />
+								<Image src={`data:image/png;base64,${Buffer.from(items.subcategory_img.data).toString('base64')}`} />
 								<Info>
 									<Icon>
 										<FaSearch />

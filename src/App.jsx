@@ -1,14 +1,23 @@
 import './App.css';
-import { BrowserRouter, Routes, Route, Navigate, RouterProvider } from 'react-router-dom';
+import { RouterProvider } from 'react-router-dom';
 
 import { APIContextProvider } from './context/ProductContext';
 
 import router from './Routes/Routes';
+import { Suspense } from 'react';
 
 function App() {
 	return (
 		<APIContextProvider>
-			<RouterProvider router={router} />
+			<Suspense
+				fallback={
+					<div id="loading">
+						<div class="loader"></div>
+					</div>
+				}
+			>
+				<RouterProvider router={router} />
+			</Suspense>
 		</APIContextProvider>
 	);
 }

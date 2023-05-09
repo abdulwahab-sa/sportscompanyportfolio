@@ -1,12 +1,9 @@
+import { lazy } from 'react';
 import { createBrowserRouter, Route, createRoutesFromElements, Navigate } from 'react-router-dom';
 import RootLayout from '../layouts/RootLayout';
-import Home from './../pages/Home';
 import About from './../pages/About';
 import CustomOrder from './../pages/Customorder';
 import Contact from './../pages/Contact';
-import MainCategory from './../pages/MainCategory';
-import Subcategory from './../components/SubCategory';
-import ProductDetail from './../components/ProductDetail';
 import AdminLayout from '../layouts/AdminLayout';
 import Dashboard from '../admin/Dashboard';
 import AllCategories from '../admin/Components/AllCategories';
@@ -18,13 +15,19 @@ import { NewProduct } from '../admin/Components/NewProduct';
 import { NewCategory } from '../admin/Components/NewCategory';
 import { UpdateCategory } from '../admin/Components/UpdateCategory';
 import Login from '../admin/Components/Login';
-import { useAuthContext } from './../hooks/useAuthContext';
+import '../index.css';
+
+const Home = lazy(() => import('./../pages/Home'));
+const MainCategory = lazy(() => import('./../pages/MainCategory'));
+const Subcategory = lazy(() => import('./../components/SubCategory'));
+const ProductDetail = lazy(() => import('./../components/ProductDetail'));
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
 		<>
 			<Route path="/" element={<RootLayout />}>
 				<Route index element={<Home />} />
+
 				<Route path="about" element={<About />} />
 				<Route path="customorder" element={<CustomOrder />} />
 				<Route path="contact" element={<Contact />} />
@@ -32,6 +35,7 @@ const router = createBrowserRouter(
 				<Route path=":category/:subcategory" element={<Subcategory />} />
 				<Route path=":category/:subcategory/:productId" exact element={<ProductDetail />} />
 			</Route>
+
 			<Route path="/" element={<AdminLayout />}>
 				<Route path="dashboard" element={<Dashboard />} />
 				<Route path="allcategories" element={<AllCategories />} />
