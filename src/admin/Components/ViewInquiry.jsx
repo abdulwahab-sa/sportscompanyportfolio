@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useParams } from 'react-router-dom';
+import { useAPI } from '../../context/ProductContext';
 
 const Container = styled.div`
 	width: 100%;
@@ -52,39 +54,34 @@ const OrderDetailWrapper = styled.div`
 `;
 
 const ViewInquiry = () => {
+	const { inquiries } = useAPI();
+	const { inquiryId } = useParams();
+
+	const reqInquiry = inquiries.find((item) => item.inquiry_id === parseInt(inquiryId));
+
 	return (
 		<Container>
 			<Heading>Inquiry from Customer</Heading>
 			<BodyWrapper>
 				<Wrapper>
 					<Title>Full Name</Title>
-					<Message>Abdul Wahab</Message>
+					<Message>{reqInquiry.inquiry_name}</Message>
 				</Wrapper>
 				<Wrapper>
-					<Title>Full Name</Title>
-					<Message>Abdul Wahab</Message>
+					<Title>Email</Title>
+					<Message>{reqInquiry.inquiry_email}</Message>
 				</Wrapper>
 				<Wrapper>
-					<Title>Full Name</Title>
-					<Message>Abdul Wahab</Message>
+					<Title>Contact</Title>
+					<Message>{reqInquiry.inquiry_phone}</Message>
 				</Wrapper>
 				<Wrapper>
-					<Title>Full Name</Title>
-					<Message>Abdul Wahab</Message>
-				</Wrapper>
-				<Wrapper>
-					<Title>Full Name</Title>
-					<Message>Abdul Wahab</Message>
+					<Title>Required Qty</Title>
+					<Message>{reqInquiry.inquiry_req_qty}</Message>
 				</Wrapper>
 				<OrderDetailWrapper>
-					<Title>Full Name</Title>
-					<Message>
-						Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quas, odio. Obcaecati, incidunt voluptatibus pariatur exercitationem
-						nemo aperiam molestiae odit! Laudantium quis blanditiis numquam, excepturi exercitationem dolor aperiam labore! Vero sit ex
-						tempore aliquid minima, veniam nisi molestiae tempora sunt esse ea officia architecto magni pariatur atque impedit, error
-						suscipit ipsam quibusdam nesciunt mollitia quos! Obcaecati distinctio cum quia, ex saepe alias molestiae dicta blanditiis,
-						quibusdam dignissimos ipsa? Voluptate, quae repellendus.
-					</Message>
+					<Title>Order Details</Title>
+					<Message>{reqInquiry.order_detail}</Message>
 				</OrderDetailWrapper>
 			</BodyWrapper>
 		</Container>

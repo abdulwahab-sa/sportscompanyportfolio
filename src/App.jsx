@@ -5,19 +5,22 @@ import { APIContextProvider } from './context/ProductContext';
 
 import router from './Routes/Routes';
 import { Suspense } from 'react';
+import { AuthContextProvider } from './context/AuthContext';
 
 function App() {
 	return (
 		<APIContextProvider>
-			<Suspense
-				fallback={
-					<div id="loading">
-						<div class="loader"></div>
-					</div>
-				}
-			>
-				<RouterProvider router={router} />
-			</Suspense>
+			<AuthContextProvider>
+				<Suspense
+					fallback={
+						<div id="loading">
+							<div class="loader"></div>
+						</div>
+					}
+				>
+					<RouterProvider router={router} />
+				</Suspense>
+			</AuthContextProvider>
 		</APIContextProvider>
 	);
 }

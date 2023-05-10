@@ -80,7 +80,7 @@ const MainPanel = () => {
 		},
 	];
 
-	const date = new Date();
+	let currentDate = new Date().toJSON().slice(0, 10);
 
 	return (
 		<Container>
@@ -89,7 +89,7 @@ const MainPanel = () => {
 					<Heading>
 						Welcome! <br /> Trade City Dashboard
 					</Heading>
-					<Span> Today is 27-04-23 </Span>
+					<Span> Today is {currentDate} </Span>
 				</Wrapper>
 				<Img src={adminPanelImg} />
 			</WelcomeWrapper>
