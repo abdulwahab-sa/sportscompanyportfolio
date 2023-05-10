@@ -46,7 +46,7 @@ const AllProducts = () => {
 		<Container>
 			<Wrapper>
 				<Heading>All Products</Heading>
-				<Link to={'/createproduct'}>
+				<Link style={{ textDecoration: 'none' }} to={'/createproduct'}>
 					<Button>Create Product</Button>
 				</Link>
 			</Wrapper>

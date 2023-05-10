@@ -46,7 +46,7 @@ const AllCategories = () => {
 		<Container>
 			<Wrapper>
 				<Heading>Categories</Heading>
-				<Link to="/createcategory">
+				<Link style={{ textDecoration: 'none' }} to="/createcategory">
 					<Button>Create Category</Button>
 				</Link>
 			</Wrapper>

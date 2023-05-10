@@ -116,7 +116,7 @@ export const UpdateCategory = () => {
 		getCategory;
 	}, [id]);
 
-	const endPoint = `https://tradecity.herokuapp.com/api/subcategories`;
+	const endPoint = `https://tradecity.herokuapp.com/api/subcategories/${id} `;
 
 	const [formInputs, setFormInputs] = useState({
 		subcategory_title: '',

@@ -107,13 +107,14 @@ const Errormessage = styled.span`
 
 export const UpdateProduct = () => {
 	const { categories, subcategories, products } = useAPI();
+	const { id } = useParams();
 
-	const endPoint = `https://tradecity.herokuapp.com/api/products`;
+	const endPoint = `https://tradecity.herokuapp.com/api/products/${id}`;
 
 	const [formInputs, setFormInputs] = useState({
 		product_title: '',
 		product_description: '',
-		article: '',
+		product_article: '',
 		subcategory_subcategory_id: '',
 		category_category_id: '',
 	});
@@ -123,7 +124,7 @@ export const UpdateProduct = () => {
 	const [errors, setErrors] = useState({
 		product_title: '',
 		product_description: '',
-		article: '',
+		product_article: '',
 		subcategory_subcategory_id: '',
 		category_category_id: '',
 		product_img: '',
@@ -152,8 +153,8 @@ export const UpdateProduct = () => {
 		if (!formInputs.product_title) {
 			newErrors.product_title = 'Title is required';
 		}
-		if (!formInputs.article) {
-			newErrors.article = 'Article is required';
+		if (!formInputs.product_article) {
+			newErrors.product_article = 'Article is required';
 		}
 		if (!formInputs.category_category_id) {
 			newErrors.category_category_id = 'Category is required';
@@ -164,7 +165,7 @@ export const UpdateProduct = () => {
 		if (!formInputs.product_description) {
 			newErrors.product_description = 'Description is required';
 		}
-		if (!fileData.productImg) {
+		if (!fileData.product_img) {
 			newErrors.product_img = 'Product Image is required';
 		}
 
@@ -194,7 +195,7 @@ export const UpdateProduct = () => {
 			formData.append('category_category_id', formInputs.category_category_id);
 			formData.append('subcatgory_subcategory_id', formInputs.subcategory_subcategory_id);
 			formData.append('product_description', formInputs.product_description);
-			formData.append('article', formInputs.article);
+			formData.append('product_article', formInputs.product_article);
 
 			updateProduct(formData);
 		} else {
@@ -218,8 +219,14 @@ export const UpdateProduct = () => {
 				</InputWrapper>
 
 				<InputWrapper>
-					<Input type="text" placeholder="Enter Article Number" name="article" value={formInputs.article} onChange={handleChange} />
-					{errors.article && <Errormessage> {errors.article} </Errormessage>}
+					<Input
+						type="text"
+						placeholder="Enter Article Number"
+						name="product_article"
+						value={formInputs.product_article}
+						onChange={handleChange}
+					/>
+					{errors.product_article && <Errormessage> {errors.product_article} </Errormessage>}
 				</InputWrapper>
 
 				<InputWrapper>

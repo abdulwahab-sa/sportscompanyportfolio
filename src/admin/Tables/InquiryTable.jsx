@@ -68,6 +68,9 @@ export default function InquiryTable() {
 			renderCell: (params) => {
 				return (
 					<>
+						<Link to={'/viewinquiry/' + params.row.inquiry_id}>
+							<button className="productListEdit">View</button>
+						</Link>
 						<DeleteOutline className="productListDelete" onClick={() => handleDelete(params.row.inquiry_id)} />
 					</>
 				);
