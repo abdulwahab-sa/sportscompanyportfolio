@@ -30,7 +30,7 @@ export default function CategoryTable() {
 	const handleDelete = (id) => {
 		setData(data.filter((item) => item.id !== id));
 		axios
-			.delete(`${endPoint}${id}`)
+			.delete(`https://fine-red-duckling-gown.cyclic.app/api/subcategories/${id}`)
 			.then((response) => {
 				console.log(response);
 			})
@@ -74,7 +74,7 @@ export default function CategoryTable() {
 						<Link to={'/updatecategory/' + params.row.subcategory_id}>
 							<button className="productListEdit">Edit</button>
 						</Link>
-						<DeleteOutline className="productListDelete" onClick={() => handleDelete(params.row.id)} />
+						<DeleteOutline className="productListDelete" onClick={() => handleDelete(params.row.subcategory_id)} />
 					</>
 				);
 			},

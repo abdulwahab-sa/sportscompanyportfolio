@@ -17,7 +17,7 @@ export default function ProductTable() {
 		console.log(products);
 	}, [products]);
 
-	const endPoint = `https://tradecity.herokuapp.com/api/products/`;
+	const endPoint = `https://fine-red-duckling-gown.cyclic.app/api/products/`;
 
 	const handleDelete = (id) => {
 		setData(data.filter((item) => item.product_id !== id));

@@ -170,7 +170,7 @@ const Button = styled.button`
 `;
 function Customorder() {
 	const navigate = useNavigate();
-	const endPoint = `https://tradecity.herokuapp.com/api/inquiry`;
+	const endPoint = `https://fine-red-duckling-gown.cyclic.app/api/inquiry`;
 
 	const [InputData, setInputData] = useState({
 		inquiry_name: '',

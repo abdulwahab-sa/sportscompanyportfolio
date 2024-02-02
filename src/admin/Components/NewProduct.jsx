@@ -108,7 +108,7 @@ const Errormessage = styled.span`
 export const NewProduct = () => {
 	const { categories, subcategories, products } = useAPI();
 
-	const endPoint = `https://tradecity.herokuapp.com/api/products`;
+	const endPoint = `https://fine-red-duckling-gown.cyclic.app/api/products`;
 
 	const [formInputs, setFormInputs] = useState({
 		product_title: '',

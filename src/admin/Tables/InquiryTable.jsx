@@ -26,7 +26,7 @@ export default function InquiryTable() {
 		setData(inquiries);
 	}, [inquiries]);
 
-	const endPoint = `https://tradecity.herokuapp.com/api/inquiry/`;
+	const endPoint = `https://fine-red-duckling-gown.cyclic.app/api/inquiry/`;
 
 	const handleDelete = (id) => {
 		setData(data.filter((item) => item.inquiry_id !== id));

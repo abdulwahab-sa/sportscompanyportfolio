@@ -110,7 +110,7 @@ function MainCategory() {
 	const { category } = useParams();
 
 	// find the id of the main category based on its name
-	const mainCategoryId = categories.find((c) => c.category_title.toLowerCase() === category.toLowerCase())?.category_id;
+	const mainCategoryId = categories?.find((c) => c.category_title.toLowerCase() === category.toLowerCase())?.category_id;
 
 	// filter the subcategories to get only the ones belonging to the main category
 	const reqsubcategories = subcategories.filter((s) => s.category_category_id === mainCategoryId);

@@ -109,7 +109,7 @@ const Errormessage = styled.span`
 export const NewCategory = () => {
 	const { categories } = useAPI();
 
-	const endPoint = `https://tradecity.herokuapp.com/api/subcategories`;
+	const endPoint = `https://fine-red-duckling-gown.cyclic.app/api/subcategories`;
 
 	const [formInputs, setFormInputs] = useState({
 		subcategory_title: '',

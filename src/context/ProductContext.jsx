@@ -30,7 +30,7 @@ export function APIContextProvider({ children }) {
 
 	async function fetchData(endpoint) {
 		try {
-			const { data } = await axios.get(`https://tradecity.herokuapp.com/api/${endpoint}`);
+			const { data } = await axios.get(`https://fine-red-duckling-gown.cyclic.app/api/${endpoint}`);
 
 			if (endpoint === 'categories') {
 				dispatch({ type: 'SET_CATEGORIES', payload: data });

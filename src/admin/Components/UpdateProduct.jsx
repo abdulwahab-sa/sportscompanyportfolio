@@ -109,7 +109,7 @@ export const UpdateProduct = () => {
 	const { categories, subcategories, products } = useAPI();
 	const { id } = useParams();
 
-	const endPoint = `https://tradecity.herokuapp.com/api/products/${id}`;
+	const endPoint = `https://fine-red-duckling-gown.cyclic.app/products/${id}`;
 
 	const [formInputs, setFormInputs] = useState({
 		product_title: '',
