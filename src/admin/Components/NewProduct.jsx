@@ -131,12 +131,17 @@ export const NewProduct = () => {
 
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [successMessage, setSuccessMessage] = useState('');
+	const [errorMessage, setErrorMessage] = useState('');
+	const [selectedCategory, setSelectedCategory] = useState('');
 
 	const handleChange = (event) => {
 		setFormInputs({ ...formInputs, [event.target.name]: event.target.value });
 	};
 
 	const handleOptionsChange = (e) => {
+		if (e.target.name === 'category_category_id') {
+			setSelectedCategory(e.target.value);
+		}
 		setFormInputs({ ...formInputs, [e.target.name]: parseInt(e.target.value) });
 	};
 
@@ -183,7 +188,7 @@ export const NewProduct = () => {
 				}, 2000);
 			}
 		} catch (err) {
-			console.error(err);
+			setErrorMessage('Something went wrong, please try again');
 		}
 	};
 
@@ -201,7 +206,7 @@ export const NewProduct = () => {
 			formData.append('subcategory_subcategory_id', parseInt(formInputs.subcategory_subcategory_id));
 			formData.append('product_description', formInputs.product_description);
 			formData.append('product_article', formInputs.product_article);
-			console.log(formData.get('subcatgory_subcategory_id'));
+
 			createProduct(formData);
 		} else {
 			setIsSubmitting(false);
@@ -253,18 +258,21 @@ export const NewProduct = () => {
 				</InputWrapper>
 
 				<InputWrapper>
-					<Select name="subcategory_subcategory_id" onChange={handleOptionsChange}>
+					<Select name="subcategory_subcategory_id" onChange={handleOptionsChange} disabled={!selectedCategory}>
 						<option value="" hidden>
 							Choose Subcategory
 						</option>
-						{subcategories.map((el) => {
-							return (
-								<option key={el.subcategory_id} value={el.subcategory_id}>
-									{' '}
-									{el.subcategory_title}{' '}
-								</option>
-							);
-						})}
+						{selectedCategory &&
+							subcategories
+								.filter((el) => el.category_category_id === parseInt(selectedCategory))
+								.map((el) => {
+									return (
+										<option key={el.subcategory_id} value={el.subcategory_id}>
+											{' '}
+											{el.subcategory_title}{' '}
+										</option>
+									);
+								})}
 					</Select>
 					{errors.subcategory_subcategory_id && <Errormessage> {errors.subcategory_subcategory_id} </Errormessage>}
 				</InputWrapper>
@@ -291,6 +299,7 @@ export const NewProduct = () => {
 						Create Product
 					</Button>
 					{successMessage && <Successmessage> {successMessage} </Successmessage>}
+					{errorMessage && <Errormessage> {errorMessage} </Errormessage>}
 				</InputWrapper>
 			</Form>
 		</Container>
