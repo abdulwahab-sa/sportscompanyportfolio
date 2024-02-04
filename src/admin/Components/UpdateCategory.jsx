@@ -116,7 +116,7 @@ export const UpdateCategory = () => {
 		getCategory;
 	}, [id]);
 
-	const endPoint = `https://fine-red-duckling-gown.cyclic.app/api/subcategories/${id} `;
+	const endPoint = `https://tradecity-api.onrender.com/api/subcategories/${id} `;
 
 	const [formInputs, setFormInputs] = useState({
 		subcategory_title: '',

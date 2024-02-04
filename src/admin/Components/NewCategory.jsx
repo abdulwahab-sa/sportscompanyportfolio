@@ -109,7 +109,7 @@ const Errormessage = styled.span`
 export const NewCategory = () => {
 	const { categories } = useAPI();
 
-	const endPoint = `https://fine-red-duckling-gown.cyclic.app/api/subcategories`;
+	const endPoint = `https://tradecity-api.onrender.com/api/subcategories`;
 
 	const [formInputs, setFormInputs] = useState({
 		subcategory_title: '',

@@ -30,7 +30,7 @@ export default function CategoryTable() {
 	const handleDelete = (id) => {
 		setData(data.filter((item) => item.id !== id));
 		axios
-			.delete(`https://fine-red-duckling-gown.cyclic.app/api/subcategories/${id}`)
+			.delete(`https://tradecity-api.onrender.com/api/subcategories/${id}`)
 			.then((response) => {
 				console.log(response);
 			})
