@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useAPI } from '../../context/ProductContext';
 
 const Container = styled.div`
@@ -109,12 +109,16 @@ const Errormessage = styled.span`
 export const UpdateCategory = () => {
 	const { categories, subcategories } = useAPI();
 	const { id } = useParams();
-
-	const getCategory = subcategories.filter((el) => el.subcategory_id === parseInt(id));
+	const navigate = useNavigate();
 
 	useEffect(() => {
-		getCategory;
-	}, [id]);
+		const subcategory = subcategories?.find((el) => el.subcategory_id === parseInt(id));
+		console.log('subcategory', subcategory);
+		setFormInputs({
+			subcategory_title: subcategory?.subcategory_title,
+			category_category_id: subcategory?.category_category_id,
+		});
+	}, [id, subcategories]);
 
 	const endPoint = `https://tradecity-api.onrender.com/api/subcategories/${id} `;
 
@@ -133,6 +137,7 @@ export const UpdateCategory = () => {
 
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [submitSuccess, setSubmitSuccess] = useState(false);
+	const [submitError, setSubmitError] = useState('');
 
 	const handleChange = (event) => {
 		setFormInputs({ ...formInputs, [event.target.name]: event.target.value });
@@ -149,47 +154,40 @@ export const UpdateCategory = () => {
 		});
 	};
 
-	const validateForm = () => {
-		let newErrors = {};
-		if (!formInputs.subcategory_title) {
-			newErrors.subcategory_title = 'Title is required';
-		}
-		if (!formInputs.category_category_id) {
-			newErrors.category_category_id = 'Category is required';
-		}
-		if (!fileData.subcategory_img) {
-			newErrors.subcategory_img = 'Subcategory Image is required';
-		}
-
-		setErrors(newErrors);
-		return Object.values(newErrors).every((error) => error === '');
-	};
-
 	const updateSubcategory = async (subcategoryData) => {
 		try {
 			const result = await axios.put(endPoint, subcategoryData);
-			result && setSubmitSuccess(!submitSuccess);
+
+			if (result) {
+				setSubmitSuccess(!submitSuccess);
+				setTimeout(() => {
+					window.location.replace('/allcategories');
+				}, 2000);
+			} else {
+				setSubmitError('Something went wrong, please try again');
+			}
 		} catch (err) {
-			console.error(err);
+			setSubmitError('Something went wrong, please try again');
 		}
 	};
 
-	const handleSubmit = (event) => {
+	const handleSubmit = async (event) => {
 		event.preventDefault();
 		setIsSubmitting(true);
-		if (validateForm()) {
-			const formData = new FormData();
 
+		const formData = new FormData();
+
+		if (fileData.length !== 0) {
 			const subcategoryImage = new Blob([fileData.subcategory_img], { type: fileData.subcategory_img.type });
-
 			formData.append('subcategory_img', subcategoryImage, fileData.subcategory_img.name);
-			formData.append('category_category_id', parseInt(formInputs.category_category_id));
-			formData.append('subcategory_title', formInputs.subcategory_title);
-
-			updateSubcategory(formData);
-		} else {
-			setIsSubmitting(false);
 		}
+
+		formData.append('category_category_id', parseInt(formInputs.category_category_id));
+		formData.append('subcategory_title', formInputs.subcategory_title);
+
+		await updateSubcategory(formData);
+
+		setIsSubmitting(false);
 	};
 
 	return (
@@ -199,12 +197,15 @@ export const UpdateCategory = () => {
 				<InputWrapper>
 					<Select name="category_category_id" onChange={handleOptionsChange}>
 						<option value="" hidden>
-							Choose Category
+							{formInputs?.category_category_id
+								? categories?.find((el) => el.category_id === formInputs.category_category_id)?.category_title
+								: 'Select Category'}
 						</option>
 						{categories.map((el) => {
 							return (
 								<option key={el.category_id} value={el.category_id}>
 									{' '}
+									{}
 									{el.category_title}{' '}
 								</option>
 							);
@@ -214,7 +215,7 @@ export const UpdateCategory = () => {
 					{/* 	<Input type="text" placeholder="Enter Category" name="mainCategory" value={formInputs.mainCategory} onChange={handleChange} />
 					
 					*/}
-					{errors.category_category_id && <Errormessage> {errors.category_category_id} </Errormessage>}
+					{errors?.category_category_id && <Errormessage> {errors?.category_category_id} </Errormessage>}
 				</InputWrapper>
 
 				<InputWrapper>
@@ -224,9 +225,10 @@ export const UpdateCategory = () => {
 						name="subcategory_title"
 						value={formInputs.subcategory_title}
 						onChange={handleChange}
+						autoFocus
 					/>
 
-					{errors.subcategory_title && <Errormessage> {errors.subcategory_title}</Errormessage>}
+					{errors?.subcategory_title && <Errormessage> {errors?.subcategory_title}</Errormessage>}
 				</InputWrapper>
 
 				<InputWrapper>
@@ -239,6 +241,7 @@ export const UpdateCategory = () => {
 						Update Subcategory
 					</Button>
 					{submitSuccess && <Successmessage> Subcategory has been updated! </Successmessage>}
+					{submitError && <Errormessage> {submitError} </Errormessage>}
 				</InputWrapper>
 			</Form>
 		</Container>

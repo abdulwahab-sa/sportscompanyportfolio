@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { mobile } from '../responsive';
 import Parallax from './../images/parallax.jpg';
+import { Link } from 'react-router-dom';
 
 const Container = styled.div`
 	background-image: url(${Parallax});
@@ -58,7 +59,9 @@ function CustomOrderButton() {
 		<Container>
 			<Statement> Want Customization? </Statement>
 			<Heading>HAVE OWN DESIGNS</Heading>
-			<Button>GET QUOTE</Button>
+			<Link to={'/Customorder'} style={{ textDecoration: 'none' }}>
+				<Button>GET QUOTE</Button>
+			</Link>
 		</Container>
 	);
 }

@@ -5,9 +5,10 @@ import adminIcon from './../../images/admin-icon.png';
 import { NavLink } from 'react-router-dom';
 import { MdSpaceDashboard, MdShoppingCart, MdMessage, MdCategory } from 'react-icons/md';
 import './Sidebar.css';
+import { useLogout } from '../../hooks/useLogout';
 
 const Container = styled.div`
-	height: 100vh;
+	min-height: 100vh;
 	width: 20rem;
 	padding: 12px 14px;
 	box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 6px;
@@ -111,6 +112,8 @@ const NavStyles = {
 };
 
 const Sidebar = () => {
+	const { logout } = useLogout();
+
 	return (
 		<Container>
 			<div>
@@ -137,7 +140,7 @@ const Sidebar = () => {
 					})}
 				</NavWrapper>
 			</div>
-			<Button>Log Out</Button>
+			<Button onClick={() => logout()}>Log Out</Button>
 		</Container>
 	);
 };

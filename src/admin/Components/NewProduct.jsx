@@ -186,6 +186,8 @@ export const NewProduct = () => {
 				setTimeout(() => {
 					window.location.reload();
 				}, 2000);
+			} else {
+				setErrorMessage('Something went wrong, please try again');
 			}
 		} catch (err) {
 			setErrorMessage('Something went wrong, please try again');
@@ -273,6 +275,11 @@ export const NewProduct = () => {
 										</option>
 									);
 								})}
+						{selectedCategory && subcategories.filter((el) => el.category_category_id === parseInt(selectedCategory)).length === 0 && (
+							<option value="" disabled={true}>
+								No subcategories found!
+							</option>
+						)}
 					</Select>
 					{errors.subcategory_subcategory_id && <Errormessage> {errors.subcategory_subcategory_id} </Errormessage>}
 				</InputWrapper>

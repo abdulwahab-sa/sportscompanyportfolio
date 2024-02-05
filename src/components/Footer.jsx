@@ -2,6 +2,7 @@ import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter, FaMapMarkerAlt, FaPhone
 import styled from 'styled-components';
 import LogoSrc from './../images/logo.png';
 import { MediumScreen } from '../responsive';
+import { Link } from 'react-router-dom';
 
 const Container = styled.div`
 	display: flex;
@@ -76,6 +77,49 @@ const ContactItem = styled.div`
 	align-items: center;
 `;
 
+const usefulLinks = [
+	{
+		id: 1,
+		title: 'Home',
+		path: '/',
+	},
+	{
+		id: 2,
+		title: 'About Us',
+		path: '/about',
+	},
+	{
+		id: 3,
+		title: 'Casual Wears',
+		path: '/casualwear',
+	},
+	{
+		id: 4,
+		title: 'Active Wears',
+		path: '/activewear',
+	},
+	{
+		id: 5,
+		title: 'Leather Wears',
+		path: '/leatherwear',
+	},
+	{
+		id: 6,
+		title: 'Custom Order',
+		path: '/customorder',
+	},
+	{
+		id: 7,
+		title: 'Contact Us',
+		path: '/contact',
+	},
+	{
+		id: 8,
+		title: 'Terms & Conditions',
+		path: '#',
+	},
+];
+
 const Footer = () => {
 	return (
 		<Container>
@@ -103,14 +147,13 @@ const Footer = () => {
 			<Center>
 				<Title>Useful Links</Title>
 				<List>
-					<ListItem>Home</ListItem>
-					<ListItem>About Us</ListItem>
-					<ListItem>Casual Wears</ListItem>
-					<ListItem>Active Wears</ListItem>
-					<ListItem>Leather Wears</ListItem>
-					<ListItem>Custom Order</ListItem>
-					<ListItem>Contact Us</ListItem>
-					<ListItem>Terms & Conditions</ListItem>
+					{usefulLinks.map((item) => (
+						<ListItem key={item.id}>
+							<Link to={item.path} style={{ textDecoration: 'none', color: 'inherit' }}>
+								{item.title}
+							</Link>
+						</ListItem>
+					))}
 				</List>
 			</Center>
 			<Right>

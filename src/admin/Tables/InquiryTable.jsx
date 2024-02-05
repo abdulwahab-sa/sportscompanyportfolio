@@ -33,10 +33,12 @@ export default function InquiryTable() {
 		axios
 			.delete(`${endPoint}${id}`)
 			.then((response) => {
-				console.log(response);
+				setData(data.filter((item) => item.inquiry_id !== id));
+				alert('Inquiry Deleted!');
+				window.location.reload();
 			})
 			.catch((error) => {
-				console.error(error);
+				alert('Error Deleting Inquiry');
 			});
 	};
 

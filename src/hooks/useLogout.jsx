@@ -7,6 +7,8 @@ export const useLogout = () => {
 		localStorage.removeItem('user');
 
 		dispatch({ type: 'LOGOUT' });
+
+		window.location.replace('/');
 	};
 	return { logout };
 };

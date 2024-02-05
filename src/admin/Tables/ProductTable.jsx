@@ -8,7 +8,7 @@ import { Buffer } from 'buffer';
 import { useAPI } from '../../context/ProductContext';
 
 export default function ProductTable() {
-	const { products } = useAPI();
+	const { products, categories, subcategories } = useAPI();
 
 	const [data, setData] = useState(products);
 
@@ -24,10 +24,12 @@ export default function ProductTable() {
 		axios
 			.delete(`${endPoint}${id}`)
 			.then((response) => {
-				console.log(response);
+				setData(data.filter((item) => item.product_id !== id));
+				alert('Product Deleted!');
+				window.location.reload();
 			})
 			.catch((error) => {
-				console.error(error);
+				alert('Error Deleting Product');
 			});
 	};
 
@@ -51,7 +53,28 @@ export default function ProductTable() {
 			},
 		},
 		{ field: 'product_title', headerName: 'Product Title', width: 180 },
+		{
+			field: 'product_category',
+			headerName: 'Category',
+			width: 150,
+			renderCell: (params) => {
+				const category = categories.find((category) => category.category_id === params.row.category_category_id)?.category_title;
 
+				return <div>{category}</div>;
+			},
+		},
+		{
+			field: 'product_subcategory',
+			headerName: 'Subcategory',
+			width: 150,
+			renderCell: (params) => {
+				const subcategory = subcategories.find(
+					(subcategory) => subcategory.subcategory_id === params.row.subcategory_subcategory_id
+				)?.subcategory_title;
+
+				return <div>{subcategory}</div>;
+			},
+		},
 		{
 			field: 'product_description',
 			headerName: 'Description',

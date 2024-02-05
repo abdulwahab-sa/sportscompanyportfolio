@@ -28,14 +28,16 @@ export default function CategoryTable() {
 	}, [subcategories]);
 
 	const handleDelete = (id) => {
-		setData(data.filter((item) => item.id !== id));
 		axios
 			.delete(`https://tradecity-api.onrender.com/api/subcategories/${id}`)
 			.then((response) => {
-				console.log(response);
+				const newSubcategories = subcategories.filter((subcategory) => subcategory.subcategory_id !== id);
+				setData(newSubcategories);
+				alert('Subcategory and its products are deleted!');
+				window.location.reload();
 			})
 			.catch((error) => {
-				console.error(error);
+				alert('Error Deleting SubCategory');
 			});
 	};
 
@@ -46,6 +48,17 @@ export default function CategoryTable() {
 			field: 'subcategory_title',
 			headerName: 'SubCategory',
 			width: 200,
+		},
+		{
+			field: 'category_title',
+			headerName: 'Category',
+			width: 200,
+			renderCell: (params) => {
+				const categoryTitle = categories.find(
+					(category) => category.category_id === parseInt(params.row.category_category_id)
+				)?.category_title;
+				return <div>{categoryTitle}</div>;
+			},
 		},
 		{
 			field: 'subcategory_img',

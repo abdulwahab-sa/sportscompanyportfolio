@@ -111,6 +111,19 @@ export const UpdateProduct = () => {
 
 	const endPoint = `https://tradecity-api.onrender.com/api/products/${id}`;
 
+	useEffect(() => {
+		const product = products.find((product) => product.product_id === parseInt(id));
+		setFormInputs({
+			product_title: product?.product_title,
+			product_description: product?.product_description,
+			product_article: product?.product_article,
+			subcategory_subcategory_id: product?.subcategory_subcategory_id,
+			category_category_id: product?.category_category_id,
+		});
+
+		setSelectedCategory(product?.category_category_id);
+	}, [id, products]);
+	const [selectedCategory, setSelectedCategory] = useState('');
 	const [formInputs, setFormInputs] = useState({
 		product_title: '',
 		product_description: '',
@@ -119,7 +132,11 @@ export const UpdateProduct = () => {
 		category_category_id: '',
 	});
 
+	console.log(formInputs);
+
 	const [fileData, setfileData] = useState([]);
+
+	console.log(fileData);
 
 	const [errors, setErrors] = useState({
 		product_title: '',
@@ -132,12 +149,16 @@ export const UpdateProduct = () => {
 
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [submitSuccess, setSubmitSuccess] = useState(false);
+	const [submitError, setSubmitError] = useState('');
 
 	const handleChange = (event) => {
 		setFormInputs({ ...formInputs, [event.target.name]: event.target.value });
 	};
 
 	const handleOptionsChange = (e) => {
+		if (e.target.name === 'category_category_id') {
+			setSelectedCategory(e.target.value);
+		}
 		setFormInputs({ ...formInputs, [e.target.name]: parseInt(e.target.value) });
 	};
 
@@ -148,59 +169,43 @@ export const UpdateProduct = () => {
 		});
 	};
 
-	const validateForm = () => {
-		let newErrors = {};
-		if (!formInputs.product_title) {
-			newErrors.product_title = 'Title is required';
-		}
-		if (!formInputs.product_article) {
-			newErrors.product_article = 'Article is required';
-		}
-		if (!formInputs.category_category_id) {
-			newErrors.category_category_id = 'Category is required';
-		}
-		if (!formInputs.subcategory_subcategory_id) {
-			newErrors.subcategory_subcategory_id = 'Subcategory is required';
-		}
-		if (!formInputs.product_description) {
-			newErrors.product_description = 'Description is required';
-		}
-		if (!fileData.product_img) {
-			newErrors.product_img = 'Product Image is required';
-		}
-
-		setErrors(newErrors);
-		return Object.values(newErrors).every((error) => error === '');
-	};
-
 	const updateProduct = async (productData) => {
 		try {
 			const result = await axios.put(endPoint, productData);
-			result && setSubmitSuccess(!submitSuccess);
+
+			if (result) {
+				setSubmitSuccess(!submitSuccess);
+				setTimeout(() => {
+					window.location.replace('/allproducts');
+				}, 2000);
+			} else {
+				setSubmitError('Something went wrong, please try again');
+			}
 		} catch (err) {
-			console.error(err);
+			setSubmitError('Something went wrong, please try again');
 		}
 	};
 
-	const handleSubmit = (event) => {
+	const handleSubmit = async (event) => {
 		event.preventDefault();
 		setIsSubmitting(true);
-		if (validateForm()) {
-			const formData = new FormData();
 
+		const formData = new FormData();
+
+		if (fileData.length !== 0) {
 			const productimage = new Blob([fileData.product_img], { type: fileData.product_img.type });
-
 			formData.append('product_img', productimage, fileData.product_img.name);
-			formData.append('product_title', formInputs.product_title);
-			formData.append('category_category_id', formInputs.category_category_id);
-			formData.append('subcatgory_subcategory_id', formInputs.subcategory_subcategory_id);
-			formData.append('product_description', formInputs.product_description);
-			formData.append('product_article', formInputs.product_article);
-
-			updateProduct(formData);
-		} else {
-			setIsSubmitting(false);
 		}
+
+		formData.append('product_title', formInputs.product_title);
+		formData.append('category_category_id', formInputs.category_category_id);
+		formData.append('subcatgory_subcategory_id', formInputs.subcategory_subcategory_id);
+		formData.append('product_description', formInputs.product_description);
+		formData.append('product_article', formInputs.product_article);
+
+		await updateProduct(formData);
+
+		setIsSubmitting(false);
 	};
 
 	return (
@@ -232,7 +237,9 @@ export const UpdateProduct = () => {
 				<InputWrapper>
 					<Select name="category_category_id" onChange={handleOptionsChange}>
 						<option value="" hidden>
-							Choose Category
+							{formInputs.category_category_id
+								? categories.find((el) => el.category_id === formInputs.category_category_id)?.category_title
+								: 'Choose Category'}
 						</option>
 						{categories.map((el) => {
 							return (
@@ -250,16 +257,26 @@ export const UpdateProduct = () => {
 				<InputWrapper>
 					<Select name="subcategory_subcategory_id" onChange={handleOptionsChange}>
 						<option value="" hidden>
-							Choose Subcategory
+							{formInputs.subcategory_subcategory_id
+								? subcategories?.find((el) => el.subcategory_id === formInputs.subcategory_subcategory_id)?.subcategory_title
+								: 'Choose Subcategory'}
 						</option>
-						{subcategories.map((el) => {
-							return (
-								<option key={el.subcategory_id} value={el.subcategory_id}>
-									{' '}
-									{el.subcategory_title}{' '}
-								</option>
-							);
-						})}
+						{selectedCategory &&
+							subcategories
+								?.filter((el) => el.category_category_id === parseInt(selectedCategory))
+								.map((el) => {
+									return (
+										<option key={el.subcategory_id} value={el.subcategory_id}>
+											{' '}
+											{el?.subcategory_title}{' '}
+										</option>
+									);
+								})}
+						{selectedCategory && subcategories?.filter((el) => el.category_category_id === parseInt(selectedCategory)).length === 0 && (
+							<option value="" disabled={true}>
+								No subcategories found!
+							</option>
+						)}
 					</Select>
 					{errors.subcategory_subcategory_id && <Errormessage> {errors.subcategory_subcategory_id} </Errormessage>}
 				</InputWrapper>
@@ -286,6 +303,7 @@ export const UpdateProduct = () => {
 						Update Product
 					</Button>
 					{submitSuccess && <Successmessage> Product has been updated! </Successmessage>}
+					{submitError && <Errormessage> {submitError} </Errormessage>}
 				</InputWrapper>
 			</Form>
 		</Container>

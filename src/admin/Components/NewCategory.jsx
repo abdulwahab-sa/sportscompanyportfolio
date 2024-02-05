@@ -125,7 +125,8 @@ export const NewCategory = () => {
 	});
 
 	const [isSubmitting, setIsSubmitting] = useState(false);
-	const [submitSuccess, setSubmitSuccess] = useState(false);
+	const [submitSuccess, setSubmitSuccess] = useState('');
+	const [submitError, setSubmitError] = useState('');
 
 	const handleChange = (event) => {
 		setFormInputs({ ...formInputs, [event.target.name]: event.target.value });
@@ -161,9 +162,16 @@ export const NewCategory = () => {
 	const createSubcategory = async (subcategoryData) => {
 		try {
 			const result = await axios.post(endPoint, subcategoryData);
-			result && setSubmitSuccess(!submitSuccess);
+			if (result) {
+				setSubmitSuccess('Subcategory has been created successfully!');
+				setTimeout(() => {
+					window.location.reload();
+				}, 2000);
+			} else {
+				setSubmitError('Something went wrong, please try again');
+			}
 		} catch (err) {
-			console.error(err);
+			setSubmitError('Something went wrong, please try again');
 		}
 	};
 
@@ -232,6 +240,7 @@ export const NewCategory = () => {
 						Create Subcategory
 					</Button>
 					{submitSuccess && <Successmessage> Subcategory has been created! </Successmessage>}
+					{submitError && <Errormessage> {submitError} </Errormessage>}
 				</InputWrapper>
 			</Form>
 		</Container>

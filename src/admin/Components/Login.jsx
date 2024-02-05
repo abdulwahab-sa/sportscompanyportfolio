@@ -17,7 +17,7 @@ const FormWrapper = styled.div`
 	justify-content: space-evenly;
 	width: 260px;
 	box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
-	font-family: 'Montserrat', sans-serif; ;
+	font-family: 'Montserrat', sans-serif;
 `;
 const Form = styled.form`
 	display: flex;
@@ -54,7 +54,6 @@ const Login = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-
 		await login(username, password);
 	};
 	return (
